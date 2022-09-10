@@ -23,29 +23,69 @@ namespace Rovio.TapMatch.Logic
             {
                 Tiles[i] = new Tile(i, (LogicConstants.TileColor)random.Next(numberOfColors));
             }
+            int topTileIndex;
+            int bottomTileIndex;
+            int leftTileIndex;
+            int rightTileIndex;
+            for (int i = 0; i < Tiles.Length; i++)
+            {
+                topTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Top);
+                bottomTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Bottom);
+                leftTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Left);
+                rightTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Right);
+                Tiles[i].SetNeighbors(
+                    topTileIndex < 0 ? null : Tiles[topTileIndex],
+                    bottomTileIndex < 0 ? null : Tiles[bottomTileIndex],
+                    leftTileIndex < 0 ? null : Tiles[leftTileIndex],
+                    rightTileIndex < 0 ? null : Tiles[rightTileIndex]
+                    );
+            }
         }
 
-        public bool HasMatch(Tile target, LogicConstants.TileNeighbor neighbor)
+        /// <summary>
+        /// find all color matches of given tile index
+        /// </summary>
+        /// <param name="tileIndex"></param>
+        /// <returns></returns>
+        public ColorMatchTiles FindMatchTiles(int tileIndex)
         {
-            return HasMatch(target.Index, neighbor);
+            return FindMatchTilesRecursion(Tiles[tileIndex], new ColorMatchTiles());
         }
 
-        public bool HasMatch(int targetIndex, LogicConstants.TileNeighbor neighbor)
+        private ColorMatchTiles FindMatchTilesRecursion(Tile tile, ColorMatchTiles matchTiles)
         {
-            if (neighbor == LogicConstants.TileNeighbor.All)
+            if (tile == null || matchTiles.Contains(tile))
             {
-                return
-                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Top) &&
-                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Bottom) &&
-                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Left) &&
-                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Right);
+                return matchTiles;
             }
-            int neighborIndex = IndexOfNeighborTile(targetIndex, neighbor);
-            if (neighborIndex < 0)
+            matchTiles.AddTile(tile);
+            if (tile.IsTopMatch)
             {
-                return false;
+                FindMatchTilesRecursion(tile.Top, matchTiles);
             }
-            return Tiles[targetIndex].Color == Tiles[neighborIndex].Color;
+            if (tile.IsBottomMatch)
+            {
+                FindMatchTilesRecursion(tile.Bottom, matchTiles);
+            }
+            if (tile.IsLeftMatch)
+            {
+                FindMatchTilesRecursion(tile.Left, matchTiles);
+            }
+            if (tile.IsRightMatch)
+            {
+                FindMatchTilesRecursion(tile.Right, matchTiles);
+            }
+            return matchTiles;
+        }
+
+        /// <summary>
+        /// returns true if there is any match in neighbors of given tile index
+        /// </summary>
+        /// <param name="tileIndex"></param>
+        /// <returns></returns>
+        public bool IsAnyMatch(int tileIndex)
+        {
+            return Tiles[tileIndex].IsAnyMatch;
         }
 
         /// <summary>
@@ -54,7 +94,7 @@ namespace Rovio.TapMatch.Logic
         /// </summary>
         /// <param name="targetTileIndex"></param>
         /// <returns></returns>
-        public int IndexOfNeighborTile(int targetTileIndex, LogicConstants.TileNeighbor neighbor)
+        private int IndexOfNeighborTile(int targetTileIndex, LogicConstants.TileNeighbor neighbor)
         {
             int index = -1;
             switch (neighbor)
@@ -90,8 +130,8 @@ namespace Rovio.TapMatch.Logic
                         index = -1;
                     }
                     break;
-                case LogicConstants.TileNeighbor.All:
-                    throw new System.Exception("Neighbor All doesn't meant to has an index.");
+                case LogicConstants.TileNeighbor.Any:
+                    throw new System.Exception("Neighbor Any doesn't meant to has an index.");
             }
 
             return index;

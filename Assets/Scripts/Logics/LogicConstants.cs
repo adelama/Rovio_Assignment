@@ -22,7 +22,7 @@ namespace Rovio.TapMatch.Logic
             Bottom = 1,
             Left = 2,
             Right = 3,
-            All = 4
+            Any = 4
         }
     }
 }

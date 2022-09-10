@@ -6,28 +6,41 @@ namespace Rovio.TapMatch.Logic
 {
     public class ColorMatchTiles
     {
-        private HashSet<int> tileIndices;
+        private class TileIndexComparer : EqualityComparer<Tile>
+        {
+            public override bool Equals(Tile t1, Tile t2)
+            {
+                return t1.Index.Equals(t2.Index);
+            }
+            public override int GetHashCode(Tile t)
+            {
+                return t.Index;
+            }
+        }
 
-        public int[] TileIndices => tileIndices.ToArray();
+        private HashSet<Tile> tiles;
+
+        public Tile[] TileArray => tiles.ToArray();
 
         public ColorMatchTiles()
         {
-            tileIndices = new HashSet<int>();
+            tiles = new HashSet<Tile>(new TileIndexComparer());
         }
 
         public void Clear()
         {
-            tileIndices.Clear();
+            tiles.Clear();
         }
 
-        public bool HasTile(int tileIndex)
+        public bool Contains(Tile tile)
         {
-            return tileIndices.Contains(tileIndex);
+            return tiles.Contains(tile);
         }
 
-        public void AddTile(int tileIndex)
+        public void AddTile(Tile tile)
         {
-            tileIndices.Add(tileIndex);
+            tiles.Add(tile);
         }
     }
+
 }
