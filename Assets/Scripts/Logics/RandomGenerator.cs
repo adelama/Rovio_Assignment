@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Rovio.Logic
+namespace Rovio.Common
 {
     public class RandomGenerator
     {

@@ -60,6 +60,8 @@
     <Compile Include="Assets\Scripts\Logics\Tile.cs" />
     <Compile Include="Assets\Scripts\Logics\LogicController.cs" />
     <Compile Include="Assets\Scripts\Logics\ColorMatches.cs" />
+    <Compile Include="Assets\Scripts\Logics\RandomGenerator.cs" />
+    <Compile Include="Assets\Scripts\Logics\LogicConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
