@@ -15,5 +15,14 @@ namespace Rovio.TapMatch.Logic
             Brown = 5,
             None = 6
         }
+
+        public enum TileNeighbor
+        {
+            Top = 0,
+            Bottom = 1,
+            Left = 2,
+            Right = 3,
+            All = 4
+        }
     }
 }
