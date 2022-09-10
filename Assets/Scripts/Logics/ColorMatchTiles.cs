@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Rovio.TapMatch.Logic
 {
-    public class ColorMatches
+    public class ColorMatchTiles
     { 
 
     }

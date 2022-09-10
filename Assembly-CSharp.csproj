@@ -59,7 +59,7 @@
     <Compile Include="Assets\Scripts\Logics\LevelGrid.cs" />
     <Compile Include="Assets\Scripts\Logics\Tile.cs" />
     <Compile Include="Assets\Scripts\Logics\LogicController.cs" />
-    <Compile Include="Assets\Scripts\Logics\ColorMatches.cs" />
+    <Compile Include="Assets\Scripts\Logics\ColorMatchTiles.cs" />
     <Compile Include="Assets\Scripts\Logics\RandomGenerator.cs" />
     <Compile Include="Assets\Scripts\Logics\LogicConstants.cs" />
   </ItemGroup>

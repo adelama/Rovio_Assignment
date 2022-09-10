@@ -27,20 +27,25 @@ namespace Rovio.TapMatch.Logic
 
         public bool HasMatch(Tile target, LogicConstants.TileNeighbor neighbor)
         {
+            return HasMatch(target.Index, neighbor);
+        }
+
+        public bool HasMatch(int targetIndex, LogicConstants.TileNeighbor neighbor)
+        {
             if (neighbor == LogicConstants.TileNeighbor.All)
             {
-                return 
-                    HasMatch(target, LogicConstants.TileNeighbor.Top) &&
-                    HasMatch(target, LogicConstants.TileNeighbor.Bottom) &&
-                    HasMatch(target, LogicConstants.TileNeighbor.Left) &&
-                    HasMatch(target, LogicConstants.TileNeighbor.Right);
+                return
+                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Top) &&
+                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Bottom) &&
+                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Left) &&
+                    HasMatch(targetIndex, LogicConstants.TileNeighbor.Right);
             }
-            int neighborIndex = IndexOfNeighborTile(target.Index, neighbor);
+            int neighborIndex = IndexOfNeighborTile(targetIndex, neighbor);
             if (neighborIndex < 0)
             {
                 return false;
             }
-            return target.Color == Tiles[neighborIndex].Color;
+            return Tiles[targetIndex].Color == Tiles[neighborIndex].Color;
         }
 
         /// <summary>
