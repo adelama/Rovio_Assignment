@@ -5,7 +5,10 @@ using UnityEngine;
 namespace Rovio.Logic
 {
     public class LogicController
-    { 
-
+    {
+        public LogicController(int widthOfLevel, int heightOfLevel, int numberOfColors,uint randomSeed)
+        {
+            
+        }
     }
 }
