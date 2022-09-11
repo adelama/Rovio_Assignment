@@ -1,3 +1,4 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rovio.TapMatch.Logic;
 
 namespace LogicTests
@@ -12,15 +13,23 @@ namespace LogicTests
 
         private LogicController logicController;
 
+
         public LogicTest()
         {
             logicController = new LogicController(simpleLevelWidth,simpleLevelHeight,simpleLevelNumberOfColors,randomSeed);
+            for (int i = 0; i < logicController.Level.Tiles.Length; i++)
+            {
+                logicController.Level.Tiles[i].SetColor((LogicConstants.TileColor)(i % 3));
+            }
         }
 
         [TestMethod]
-        public void Initialize()
+        public void InitializeLogic()
         {
             Assert.IsNotNull(logicController);
+            Assert.IsNotNull(logicController.Level);
         }
+
+
     }
 }

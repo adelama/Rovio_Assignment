@@ -44,12 +44,19 @@ namespace Rovio.TapMatch.Logic
             int bottomTileIndex;
             int leftTileIndex;
             int rightTileIndex;
+
             for (int i = 0; i < Tiles.Length; i++)
             {
                 topTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Top);
                 bottomTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Bottom);
                 leftTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Left);
                 rightTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Right);
+
+                //Console.WriteLine("    "+ topTileIndex);
+                //Console.WriteLine(leftTileIndex+" _ "+i+" _ "+ rightTileIndex);
+                //Console.WriteLine("    "+bottomTileIndex);
+                //Console.WriteLine("______________________________________");
+
                 Tiles[i].SetNeighbors(
                     topTileIndex < 0 ? null : Tiles[topTileIndex],
                     bottomTileIndex < 0 ? null : Tiles[bottomTileIndex],
@@ -134,7 +141,7 @@ namespace Rovio.TapMatch.Logic
                     break;
                 case LogicConstants.TileNeighbor.Bottom:
                     index = targetTileIndex + width;
-                    if (index > Tiles.Length)
+                    if (index >= Tiles.Length)
                     {
                         index = -1;
                     }

@@ -24,6 +24,11 @@ namespace Rovio.TapMatch.Logic
             this.Color = color;
         }
 
+        public void SetColor(LogicConstants.TileColor color)
+        {
+            this.Color = color;
+        }
+
         public void SetNeighbors(
             Tile top,
             Tile bottom,

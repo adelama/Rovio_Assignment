@@ -13,10 +13,10 @@ namespace Rovio.TapMatch.Logic
         {
             Random = new RandomGenerator(randomSeed);
             Level = new LevelGrid(widthOfLevel, heightOfLevel, numberOfColors, Random);
-            CheckDeadLock();
+            CheckAndSolveDeadLock();
         }
 
-        private void CheckDeadLock()
+        private void CheckAndSolveDeadLock()
         {
             while (Level.IsAtDeadLock)
             {
