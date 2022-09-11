@@ -20,7 +20,8 @@ namespace Rovio.TapMatch.Logic
 
         private HashSet<Tile> tiles;
 
-        public Tile[] TileArray => tiles.ToArray();
+        public Tile[] TilesArray => tiles.ToArray();
+        public Tile[] TilesSortedArray => tiles.OrderBy(t=>t.Index).ToArray();
 
         public ColorMatchTiles()
         {

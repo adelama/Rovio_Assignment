@@ -43,6 +43,8 @@ namespace LogicTests
                 }
                 Console.Write($"{i}: {logicController.Level.Tiles[i].Color} | ");
             }
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------------------------");
         }
 
         [TestMethod]
@@ -122,6 +124,35 @@ namespace LogicTests
             Assert.IsFalse(logicController.Level.IsAnyMatch(tileIndex));
             tileIndex = 2;
             Assert.IsTrue(logicController.Level.IsAnyMatch(tileIndex));
+        }
+
+        [TestMethod]
+        public void FindingTilesMatchColorOfGivenTile()
+        {
+            //expected tiles index: 1, 2, 3, 4, 5, 7,
+            ColorMatchTiles expectedMatches = new ColorMatchTiles();
+            expectedMatches.AddTile(logicController.Level.Tiles[1]);
+            expectedMatches.AddTile(logicController.Level.Tiles[2]);
+            expectedMatches.AddTile(logicController.Level.Tiles[3]);
+            expectedMatches.AddTile(logicController.Level.Tiles[4]);
+            expectedMatches.AddTile(logicController.Level.Tiles[5]);
+            expectedMatches.AddTile(logicController.Level.Tiles[7]);
+            for (int tileIndex = 1; tileIndex < 7; tileIndex++)
+            {
+                int tileIndexToStartFinding = tileIndex;
+                if(tileIndex == 6)
+                    tileIndexToStartFinding = 7;
+                ColorMatchTiles foundMatches = logicController.Level.FindMatchTiles(tileIndexToStartFinding);
+                var foundedTilesArray = foundMatches.TilesSortedArray;
+                var expectedTilesArray = expectedMatches.TilesSortedArray;
+                Console.WriteLine("Founded Tiles Match Color of Tile: " + tileIndexToStartFinding);
+                for (int i = 0; i < foundedTilesArray.Length; i++)
+                {
+                    Console.Write($"{foundedTilesArray[i].Index}, ");
+                    Assert.AreEqual(expectedTilesArray[i], foundedTilesArray[i]);
+                }
+                Console.WriteLine();
+            }
         }
 
         private LogicController LogicWithDeadLockStateLevel()
