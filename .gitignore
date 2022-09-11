@@ -2,12 +2,12 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
-/Library
-/Logs
-/obj
-/Temp
-/UserSettings
+/UnityProject/.vs
+/UnityProject/Library
+/UnityProject/Logs
+/UnityProject/obj
+/UnityProject/Temp
+/UnityProject/UserSettings
 
 *.vsconfig
 
