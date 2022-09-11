@@ -1,0 +1,8 @@
+﻿
+*.vsconfig
+
+/obj
+/bin
+/bin.meta
+/obj.meta
+/TapMatchLogic.csproj.meta
