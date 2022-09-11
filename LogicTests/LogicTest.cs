@@ -16,7 +16,7 @@ namespace LogicTests
 
         public LogicTest()
         {
-            logicController = new LogicController(simpleLevelWidth,simpleLevelHeight,simpleLevelNumberOfColors,randomSeed);
+            logicController = new LogicController(simpleLevelWidth, simpleLevelHeight, simpleLevelNumberOfColors, randomSeed);
             for (int i = 0; i < logicController.Level.Tiles.Length; i++)
             {
                 logicController.Level.Tiles[i].SetColor((LogicConstants.TileColor)(i % 3));
@@ -28,6 +28,52 @@ namespace LogicTests
         {
             Assert.IsNotNull(logicController);
             Assert.IsNotNull(logicController.Level);
+        }
+
+        [TestMethod]
+        public void CheckingTileNeighbors()
+        {
+            Tile tile = logicController.Level.Tiles[5];
+            Assert.AreEqual(logicController.Level.Tiles[1], tile.Top);
+            Assert.AreEqual(logicController.Level.Tiles[9], tile.Bottom);
+            Assert.AreEqual(logicController.Level.Tiles[4], tile.Left);
+            Assert.AreEqual(logicController.Level.Tiles[6], tile.Right);
+        }
+
+        [TestMethod]
+        public void CheckingCornerTilesNeighbors()
+        {
+            //Top Left Tile
+            int tileIndex = 0;
+            Tile tile = logicController.Level.Tiles[tileIndex];
+            Assert.AreEqual(null, tile.Top);
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex + simpleLevelWidth], tile.Bottom);
+            Assert.AreEqual(null, tile.Left);
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex + 1], tile.Right);
+
+            //Top Right Tile
+            tileIndex = simpleLevelWidth - 1;
+            tile = logicController.Level.Tiles[tileIndex];
+            Assert.AreEqual(null, tile.Top);
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex + simpleLevelWidth], tile.Bottom);
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex - 1], tile.Left);
+            Assert.AreEqual(null, tile.Right);
+
+            //Down Left Tile
+            tileIndex = (simpleLevelHeight - 1) * simpleLevelWidth;
+            tile = logicController.Level.Tiles[tileIndex];
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex - simpleLevelWidth], tile.Top);
+            Assert.AreEqual(null, tile.Bottom);
+            Assert.AreEqual(null, tile.Left);
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex + 1], tile.Right);
+
+            //Down Right Tile
+            tileIndex = logicController.Level.Tiles.Length - 1;
+            tile = logicController.Level.Tiles[tileIndex];
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex - simpleLevelWidth], tile.Top);
+            Assert.AreEqual(null, tile.Bottom);
+            Assert.AreEqual(logicController.Level.Tiles[tileIndex - 1], tile.Left);
+            Assert.AreEqual(null, tile.Right);
         }
 
         private LogicController LogicWithDeadLockStateLevel()
