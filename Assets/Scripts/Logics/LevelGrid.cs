@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Rovio.Common;
@@ -11,6 +12,22 @@ namespace Rovio.TapMatch.Logic
         private int numberOfColors;
         private RandomGenerator random;
         public Tile[] Tiles { get; private set; }
+
+        public bool IsAtDeadLock
+        {
+            get
+            {
+                for (int i = 0; i < Tiles.Length; i++)
+                {
+                    if (Tiles[i].IsAnyMatch)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
 
         public LevelGrid(int width, int height, int numberOfColors, RandomGenerator random)
         {
@@ -39,6 +56,15 @@ namespace Rovio.TapMatch.Logic
                     leftTileIndex < 0 ? null : Tiles[leftTileIndex],
                     rightTileIndex < 0 ? null : Tiles[rightTileIndex]
                     );
+            }
+        }
+
+
+        internal void Shuffle()
+        {
+            for (int i = 0; i < Tiles.Length; i++)
+            {
+                Tile.SwapColor(Tiles[i], Tiles[random.Next(Tiles.Length)]);
             }
         }
 

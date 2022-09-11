@@ -56,12 +56,12 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Logics\LevelGrid.cs" />
-    <Compile Include="Assets\Scripts\Logics\Tile.cs" />
-    <Compile Include="Assets\Scripts\Logics\LogicController.cs" />
-    <Compile Include="Assets\Scripts\Logics\ColorMatchTiles.cs" />
     <Compile Include="Assets\Scripts\Logics\RandomGenerator.cs" />
+    <Compile Include="Assets\Scripts\Logics\LogicController.cs" />
     <Compile Include="Assets\Scripts\Logics\LogicConstants.cs" />
+    <Compile Include="Assets\Scripts\Logics\LevelGrid.cs" />
+    <Compile Include="Assets\Scripts\Logics\ColorMatchTiles.cs" />
+    <Compile Include="Assets\Scripts\Logics\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

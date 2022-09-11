@@ -68,5 +68,12 @@ namespace Rovio.TapMatch.Logic
             return tile.Color == Color;
         }
 
+        public static void SwapColor(Tile t1,Tile t2)
+        {
+            LogicConstants.TileColor color1 = t1.Color;
+            t1.Color = t2.Color;
+            t2.Color = color1;
+        }
+
     }
 }
