@@ -30,6 +30,29 @@ namespace LogicTests
             Assert.IsNotNull(logicController.Level);
         }
 
+        private LogicController LogicWithDeadLockStateLevel()
+        {
+            LogicController controller = new LogicController(3, 3, 2, randomSeed);
+            for (int i = 0; i < controller.Level.Tiles.Length; i++)
+            {
+                controller.Level.Tiles[i].SetColor((LogicConstants.TileColor)(i % 2));
+            }
+            return controller;
+        }
+
+        [TestMethod]
+        public void IsLevelAtDeadLockTest()
+        {
+            Assert.IsTrue(LogicWithDeadLockStateLevel().Level.IsAtDeadLock);
+        }
+
+        [TestMethod]
+        public void SolveDeadLockByShuffling()
+        {
+            LogicController controllerWithDeadLevel = LogicWithDeadLockStateLevel();
+            controllerWithDeadLevel.CheckAndSolveDeadLock();
+            Assert.IsFalse(controllerWithDeadLevel.Level.IsAtDeadLock);
+        }
 
     }
 }

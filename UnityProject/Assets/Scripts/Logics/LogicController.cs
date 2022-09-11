@@ -16,7 +16,7 @@ namespace Rovio.TapMatch.Logic
             CheckAndSolveDeadLock();
         }
 
-        private void CheckAndSolveDeadLock()
+        public void CheckAndSolveDeadLock()
         {
             while (Level.IsAtDeadLock)
             {
