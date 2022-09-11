@@ -13,13 +13,35 @@ namespace LogicTests
 
         private LogicController logicController;
 
+        //The RandomGenerator is Deterministic so
+        //for randomSeed = 123456 the Initial Level State Should be like this
+        /*
+              ---------------------------------------------
+             | 0: Green |  1: Red  |  2: Red  |  3: Red    |
+              ---------------------------------------------
+             |  4: Red  |  5: Red  |  6: Blue |  7: Red    |
+              ---------------------------------------------
+             |  8: Blue | 9: Green |  10: Red  |  11: Blue |
+              ---------------------------------------------
+         */
 
         public LogicTest()
         {
             logicController = new LogicController(simpleLevelWidth, simpleLevelHeight, simpleLevelNumberOfColors, randomSeed);
+            Console.WriteLine("Initial Level State:");
+            PrintCurrentLevelTilesColor();
+        }
+
+        private void PrintCurrentLevelTilesColor()
+        {
+            Console.WriteLine("_______________________________________________________");
             for (int i = 0; i < logicController.Level.Tiles.Length; i++)
             {
-                logicController.Level.Tiles[i].SetColor((LogicConstants.TileColor)(i % 3));
+                if (i % simpleLevelWidth == 0)
+                {
+                    Console.WriteLine();
+                }
+                Console.Write($"{i}: {logicController.Level.Tiles[i].Color} | ");
             }
         }
 
@@ -76,6 +98,32 @@ namespace LogicTests
             Assert.AreEqual(null, tile.Right);
         }
 
+        [TestMethod]
+        public void IsNeighborsMatchForTile()
+        {
+            int tileIndex = 5;
+            Assert.IsTrue(logicController.Level.Tiles[tileIndex].IsTopMatch);
+            Assert.IsTrue(logicController.Level.Tiles[tileIndex].IsLeftMatch);
+            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsBottomMatch);
+            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsRightMatch);
+
+            tileIndex = 0;
+            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsTopMatch);
+            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsLeftMatch);
+            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsBottomMatch);
+            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsRightMatch);
+
+        }
+
+        [TestMethod]
+        public void IsAnyMatchForTile()
+        {
+            int tileIndex = 0;
+            Assert.IsFalse(logicController.Level.IsAnyMatch(tileIndex));
+            tileIndex = 2;
+            Assert.IsTrue(logicController.Level.IsAnyMatch(tileIndex));
+        }
+
         private LogicController LogicWithDeadLockStateLevel()
         {
             LogicController controller = new LogicController(3, 3, 2, randomSeed);
@@ -90,6 +138,7 @@ namespace LogicTests
         public void IsLevelAtDeadLockTest()
         {
             Assert.IsTrue(LogicWithDeadLockStateLevel().Level.IsAtDeadLock);
+            Assert.IsFalse(logicController.Level.IsAtDeadLock);
         }
 
         [TestMethod]

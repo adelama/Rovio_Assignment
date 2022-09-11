@@ -67,7 +67,7 @@ namespace Rovio.TapMatch.Logic
         }
 
 
-        internal void Shuffle()
+        public void Shuffle()
         {
             for (int i = 0; i < Tiles.Length; i++)
             {
