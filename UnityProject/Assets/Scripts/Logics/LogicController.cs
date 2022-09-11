@@ -6,23 +6,29 @@ namespace Rovio.TapMatch.Logic
 {
     public class LogicController
     {
-        private LevelGrid level;
-        internal RandomGenerator Random { get; private set; }
+        public LevelGrid Level { get; private set; }
+        public RandomGenerator Random { get; private set; }
 
         public LogicController(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed)
         {
             Random = new RandomGenerator(randomSeed);
-            level = new LevelGrid(widthOfLevel, heightOfLevel, numberOfColors, Random);
+            Level = new LevelGrid(widthOfLevel, heightOfLevel, numberOfColors, Random);
             CheckDeadLock();
         }
 
         private void CheckDeadLock()
         {
-            while (level.IsAtDeadLock)
+            while (Level.IsAtDeadLock)
             {
-                level.Shuffle();        
+                Level.Shuffle();        
             } 
         }
 
+
+        //this require to run tests
+        private static void Main()
+        {
+            
+        }
     }
 }

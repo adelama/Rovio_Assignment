@@ -40,5 +40,8 @@
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="Tile.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
