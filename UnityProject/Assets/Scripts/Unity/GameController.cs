@@ -9,9 +9,9 @@ namespace Rovio.TapMatch.Unity
 {
     public class GameController : MonoBehaviour
     {
-        private const int LevelWidth = 4;
+        private const int LevelWidth = 5;
         private const int LevelHeight = 5;
-        private const int LevelNumberOfColors = 4;
+        private const int LevelNumberOfColors = 6;
 
         [SerializeField] Transform levelPanelTransform;
         private GridLayoutGroup levelGridLayout;
@@ -32,6 +32,13 @@ namespace Rovio.TapMatch.Unity
         {
             levelGridLayout = levelPanelTransform.GetComponent<GridLayoutGroup>();
             levelGridLayout.constraintCount = LevelWidth;
+            float scaleFactor = LevelWidth / 5.5f;
+            if (scaleFactor < 1)
+            {
+                scaleFactor = 1;
+            }
+            levelGridLayout.cellSize /= scaleFactor;
+
             GameObject tileTemplate = levelPanelTransform.GetChild(0).gameObject;
             unityLevelTiles = new TileDummy[logicController.Level.Tiles.Length];
             for (int i = 0; i < unityLevelTiles.Length; i++)
@@ -66,7 +73,7 @@ namespace Rovio.TapMatch.Unity
                 unityLevelTiles[poppedTiles[i].Index].SetColor(Color.black);
             }
             yield return new WaitForSeconds(0.5f);
-            for (int i = unityLevelTiles.Length-1; i >=0 ; i--)
+            for (int i = unityLevelTiles.Length - 1; i >= 0; i--)
             {
                 unityLevelTiles[i].SetColor(
                     TileDummy.ConvertLogicColorToUnityColor(logicController.Level.Tiles[i].Color));
@@ -89,7 +96,7 @@ namespace Rovio.TapMatch.Unity
             }
             else
             {
-                
+
             }
         }
     }
