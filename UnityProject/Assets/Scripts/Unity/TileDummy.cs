@@ -53,7 +53,7 @@ namespace Rovio.TapMatch.Unity
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Brown:
                     return new Color(1, 0.5f, 0);
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.None:
-                    return Color.white;
+                    return Color.black;
                 default:
                     return Color.clear;
             }

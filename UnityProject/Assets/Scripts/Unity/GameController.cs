@@ -16,10 +16,11 @@ namespace Rovio.TapMatch.Unity
         [SerializeField] Transform levelPanelTransform;
         private GridLayoutGroup levelGridLayout;
         private TileDummy[] unityLevelTiles;
+        private bool isUpdatingLevel;
 
         private LogicController logicController;
         private int randomSeed;
-        // Start is called before the first frame update
+
         void Start()
         {
             randomSeed = DateTime.Now.Millisecond;
@@ -51,19 +52,45 @@ namespace Rovio.TapMatch.Unity
             }
         }
 
-        private void UpdateUnityLevel()
+        private void UpdateUnityLevel(ColorMatchTiles matchTiles)
         {
-            for (int i = 0; i < unityLevelTiles.Length; i++)
+            StartCoroutine(UpdateUnityLevelIE(matchTiles));
+        }
+
+        private IEnumerator UpdateUnityLevelIE(ColorMatchTiles matchTiles)
+        {
+            isUpdatingLevel = true;
+            Tile[] poppedTiles = matchTiles.TilesArray;
+            for (int i = 0; i < poppedTiles.Length; i++)
+            {
+                unityLevelTiles[poppedTiles[i].Index].SetColor(Color.black);
+            }
+            yield return new WaitForSeconds(0.5f);
+            for (int i = unityLevelTiles.Length-1; i >=0 ; i--)
             {
                 unityLevelTiles[i].SetColor(
                     TileDummy.ConvertLogicColorToUnityColor(logicController.Level.Tiles[i].Color));
             }
+            yield return new WaitForSeconds(0.2f);
+            isUpdatingLevel = false;
         }
 
         private void OnTileClick(int tileIndex)
         {
-            logicController.ExecuteCommand(new PopTileCommand(tileIndex, logicController));
-            UpdateUnityLevel();
+            if (isUpdatingLevel)
+            {
+                return;
+            }
+            var popCmd = new PopTileCommand(tileIndex, logicController);
+            bool isExecuted = logicController.ExecuteCommand(popCmd);
+            if (isExecuted)
+            {
+                UpdateUnityLevel(popCmd.ColorMatchTiles);
+            }
+            else
+            {
+                
+            }
         }
     }
 }
