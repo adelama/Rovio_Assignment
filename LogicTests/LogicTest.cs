@@ -8,7 +8,7 @@ namespace LogicTests
     {
         private const int randomSeed = 123456;
         private const int simpleLevelWidth = 4;
-        private const int simpleLevelHeight = 3;
+        private const int simpleLevelHeight = 5;
         private const int simpleLevelNumberOfColors = 3;
 
         private LogicController logicController;
@@ -16,13 +16,17 @@ namespace LogicTests
         //The RandomGenerator is Deterministic so
         //for randomSeed = 123456 the Initial Level State Should be like this
         /*
-              ---------------------------------------------
-             | 0: Green |  1: Red  |  2: Red  |  3: Red    |
-              ---------------------------------------------
-             |  4: Red  |  5: Red  |  6: Blue |  7: Red    |
-              ---------------------------------------------
-             |  8: Blue | 9: Green |  10: Red  |  11: Blue |
-              ---------------------------------------------
+              ----------------------------------------------
+             |  0: Green | 1: Red    | 2: Red   |  3: Red   |
+              ----------------------------------------------
+             |  4: Red   | 5: Red    | 6: Blue  |  7: Red   |
+              ----------------------------------------------
+             |  8: Blue  | 9: Green  | 10: Red  |  11: Blue |
+              ----------------------------------------------
+             |  12: Red  | 13: Red   | 14: Red  | 15: Red   | 
+              ----------------------------------------------
+             |  16: Blue | 17: Green | 18: Red  | 19: Blue  | 
+              ----------------------------------------------
          */
 
         public LogicTest()
@@ -140,7 +144,7 @@ namespace LogicTests
             for (int tileIndex = 1; tileIndex < 7; tileIndex++)
             {
                 int tileIndexToStartFinding = tileIndex;
-                if(tileIndex == 6)
+                if (tileIndex == 6)
                     tileIndexToStartFinding = 7;
                 ColorMatchTiles foundMatches = logicController.Level.FindMatchTiles(tileIndexToStartFinding);
                 var foundedTilesArray = foundMatches.TilesSortedArray;
@@ -178,6 +182,27 @@ namespace LogicTests
             LogicController controllerWithDeadLevel = LogicWithDeadLockStateLevel();
             controllerWithDeadLevel.CheckAndSolveDeadLock();
             Assert.IsFalse(controllerWithDeadLevel.Level.IsAtDeadLock);
+        }
+
+        [TestMethod]
+        public void CheckingPopTileCommand()
+        {
+            int tileIndex = 13;
+            LogicConstants.TileColor[] expectedTilesState = new LogicConstants.TileColor[]
+                {
+                    LogicConstants.TileColor.Red,   LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Red,   LogicConstants.TileColor.Red ,
+                    LogicConstants.TileColor.Green, LogicConstants.TileColor.Red,   LogicConstants.TileColor.Green, LogicConstants.TileColor.Red ,
+                    LogicConstants.TileColor.Red,   LogicConstants.TileColor.Red,   LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Red ,
+                    LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Green, LogicConstants.TileColor.Red,   LogicConstants.TileColor.Blue ,
+                    LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Green, LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Blue ,
+                };
+            logicController.ExecuteCommand(new PopTileCommand(tileIndex, logicController));
+            for (int i = 0; i < expectedTilesState.Length; i++)
+            {
+                Assert.IsTrue(expectedTilesState[i] == logicController.Level.Tiles[i].Color);
+            }
+            Console.WriteLine("Level State after Pop Tile: " + tileIndex);
+            PrintCurrentLevelTilesColor();
         }
 
     }
