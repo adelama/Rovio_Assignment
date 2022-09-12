@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using Rovio.Common;
 
 namespace Rovio.TapMatch.Logic
@@ -22,6 +21,11 @@ namespace Rovio.TapMatch.Logic
             {
                 Level.Shuffle();        
             } 
+        }
+
+        public void PopMatchTiles(ColorMatchTiles matchTiles)
+        {
+            throw new NotImplementedException();
         }
 
 

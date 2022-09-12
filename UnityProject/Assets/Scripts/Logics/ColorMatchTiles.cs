@@ -22,6 +22,7 @@ namespace Rovio.TapMatch.Logic
 
         public Tile[] TilesArray => tiles.ToArray();
         public Tile[] TilesSortedArray => tiles.OrderBy(t=>t.Index).ToArray();
+        public int TilesCount => tiles.Count;
 
         public ColorMatchTiles()
         {

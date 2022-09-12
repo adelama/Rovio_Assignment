@@ -38,6 +38,7 @@
     <Compile Include="LevelGrid.cs" />
     <Compile Include="LogicConstants.cs" />
     <Compile Include="LogicController.cs" />
+    <Compile Include="PopTileCommand.cs" />
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="Tile.cs" />
   </ItemGroup>

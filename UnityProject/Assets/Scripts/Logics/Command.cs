@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
-using Rovio.TapMatch.Logic;
 
-namespace Rovio.Common
+namespace Rovio.TapMatch.Logic
 {
     public abstract class Command
     {
         protected LogicController controller { get; private set; }
 
-        public Command(LogicController controller)
+        protected Command(LogicController controller)
         {
             this.controller = controller;
         }

@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\Logics\ColorMatchTiles.cs" />
     <Compile Include="Assets\Scripts\Logics\Tile.cs" />
     <Compile Include="Assets\Scripts\Logics\Command.cs" />
+    <Compile Include="Assets\Scripts\Logics\PopTileCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\Logics\obj\Debug\TapMatchLogic.csproj.FileListAbsolute.txt" />
