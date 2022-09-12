@@ -185,6 +185,15 @@ namespace LogicTests
         }
 
         [TestMethod]
+        public void CanExecutePopTileCommand()
+        {
+            int tileIndex = 8;
+            Assert.IsFalse(logicController.ExecuteCommand(new PopTileCommand(tileIndex, logicController)));
+            tileIndex = 7;
+            Assert.IsTrue(logicController.ExecuteCommand(new PopTileCommand(tileIndex, logicController)));
+        }
+
+        [TestMethod]
         public void CheckingPopTileCommand()
         {
             int tileIndex = 13;
