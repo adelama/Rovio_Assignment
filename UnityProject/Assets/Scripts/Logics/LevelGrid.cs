@@ -38,7 +38,7 @@ namespace Rovio.TapMatch.Logic
             Tiles = new Tile[width * height];
             for (int i = 0; i < Tiles.Length; i++)
             {
-                Tiles[i] = new Tile(i, (LogicConstants.TileColor)random.Next(numberOfColors));
+                Tiles[i] = new Tile(i, GetRandomTileColor());
             }
             int topTileIndex;
             int bottomTileIndex;
@@ -61,12 +61,52 @@ namespace Rovio.TapMatch.Logic
             }
         }
 
+        private LogicConstants.TileColor GetRandomTileColor()
+        {
+            return (LogicConstants.TileColor)random.Next(numberOfColors);
+        }
+
 
         public void Shuffle()
         {
             for (int i = 0; i < Tiles.Length; i++)
             {
                 Tile.SwapColor(Tiles[i], Tiles[random.Next(Tiles.Length)]);
+            }
+        }
+
+        public void DropDownTiles()
+        {
+            for (int i = Tiles.Length - 1; i >= Tiles.Length - width; i--)
+            {
+                DropDownTilesInColumnRecursion(Tiles[i]);
+            }
+        }
+
+        private void DropDownTilesInColumnRecursion(Tile tile)
+        {
+            if (tile == null)
+            {
+                return;
+            }
+            DropDownSingleTile(tile);
+            DropDownTilesInColumnRecursion(tile.Top);
+            if (tile.Color == LogicConstants.TileColor.None)
+            {
+                tile.SetColor(GetRandomTileColor());
+            }
+        }
+
+        private void DropDownSingleTile(Tile tile)
+        {
+            if (tile.Color != LogicConstants.TileColor.None)
+            {
+                while (tile.Bottom != null &&
+                        tile.Bottom.Color == LogicConstants.TileColor.None)
+                {
+                    Tile.SwapColor(tile, tile.Bottom);
+                    tile = tile.Bottom;
+                }
             }
         }
 

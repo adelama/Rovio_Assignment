@@ -15,6 +15,21 @@ namespace Rovio.TapMatch.Logic
             CheckAndSolveDeadLock();
         }
 
+        /// <summary>
+        /// execute a command to proceed in logic
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns>return true if command executed successfully</returns>
+        public bool ExecuteCommand(Command cmd)
+        {
+            if (cmd.CanExecute())
+            {
+                cmd.Execute();
+                return true;
+            }
+            return false;
+        }
+
         public void CheckAndSolveDeadLock()
         {
             while (Level.IsAtDeadLock)
@@ -25,8 +40,16 @@ namespace Rovio.TapMatch.Logic
 
         public void PopMatchTiles(ColorMatchTiles matchTiles)
         {
-            throw new NotImplementedException();
+            Tile[] tiles = matchTiles.TilesArray;
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                tiles[i].SetColor(LogicConstants.TileColor.None);
+            }
+            Level.DropDownTiles();
+            CheckAndSolveDeadLock();
         }
+
+
 
 
         //this is require to run tests
