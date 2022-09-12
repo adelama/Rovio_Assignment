@@ -52,11 +52,6 @@ namespace Rovio.TapMatch.Logic
                 leftTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Left);
                 rightTileIndex = IndexOfNeighborTile(i, LogicConstants.TileNeighbor.Right);
 
-                //Console.WriteLine("    "+ topTileIndex);
-                //Console.WriteLine(leftTileIndex+" _ "+i+" _ "+ rightTileIndex);
-                //Console.WriteLine("    "+bottomTileIndex);
-                //Console.WriteLine("______________________________________");
-
                 Tiles[i].SetNeighbors(
                     topTileIndex < 0 ? null : Tiles[topTileIndex],
                     bottomTileIndex < 0 ? null : Tiles[bottomTileIndex],

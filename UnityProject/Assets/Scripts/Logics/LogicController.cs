@@ -25,7 +25,7 @@ namespace Rovio.TapMatch.Logic
         }
 
 
-        //this require to run tests
+        //this is require to run tests
         private static void Main()
         {
             

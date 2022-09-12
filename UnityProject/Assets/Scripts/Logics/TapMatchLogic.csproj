@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ColorMatchTiles.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="LevelGrid.cs" />
     <Compile Include="LogicConstants.cs" />
     <Compile Include="LogicController.cs" />
