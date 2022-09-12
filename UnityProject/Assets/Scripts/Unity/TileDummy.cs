@@ -23,6 +23,11 @@ namespace Rovio.TapMatch.Unity
             this.onClick = onClick;
         }
 
+        public void SetColor(Color color)
+        {
+            image.color = color;
+        }
+
         public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
@@ -40,7 +45,7 @@ namespace Rovio.TapMatch.Unity
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Green:
                     return Color.green;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Blue:
-                    return Color.blue;
+                    return Color.cyan;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Yellow:
                     return Color.yellow;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Purple:
