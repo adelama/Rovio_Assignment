@@ -19,7 +19,7 @@ namespace Rovio.TapMatch.WindowsApp
 
         public void StartGame()
         {
-            logicController = new LogicController(5,5,3,DateTime.Now.Millisecond);
+            logicController = new LogicController(50,50,3,DateTime.Now.Millisecond);
             remoteForm.InitializeLevel(logicController);
         }
     }

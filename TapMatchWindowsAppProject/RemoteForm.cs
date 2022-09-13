@@ -28,8 +28,7 @@ namespace Rovio.TapMatch.WindowsApp
 
             int tileSize = 80;
             int spacing = 10;
-            float scaleFactor = logicController.Level.Width / 5f;
-            tileSize =(int)(tileSize/ scaleFactor);
+
             levelLayoutPanel.MaximumSize = new Size((tileSize + spacing) * logicController.Level.Width, (tileSize + spacing) * logicController.Level.Height);
 
             formLevelTiles = new TileDummyWindows[logicController.Level.Tiles.Length];
