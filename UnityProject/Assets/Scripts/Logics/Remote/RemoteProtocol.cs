@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Rovio.TapMatch.Remote
 {
-    internal class RemoteProtocol
+    public class RemoteProtocol
     {
-        private const string PipeName = "TapMatchPipe";
+        private const string PipeServerName = "TapMatchServerPipe";
+        private const string PipeClientName = "TapMatchClientPipe";
 
-        private NamedPipeServerStream pipeServer;
-        private NamedPipeClientStream pipeClient;
-        private StreamString stringStreamer;
+        private StreamString stringStreamerSend;
+        private StreamString stringStreamerReceive;
         private Action<string> onReceiveData;
         private bool isConnected;
 
@@ -24,52 +24,131 @@ namespace Rovio.TapMatch.Remote
             this.onReceiveData = onReceiveData;
         }
 
-        public async Task StartServer(Action onConnect = null)
+        public void ConnectAsServer(Action onConnect = null)
         {
-            pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1);
-            stringStreamer = new StreamString(pipeServer);
-            await pipeServer.WaitForConnectionAsync();
-            isConnected = true;
-            onConnect?.Invoke();
-            StartRecieving();
-        }
-
-        public async Task StartClient(Action onConnect = null)
-        {
-            pipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.InOut);
-            stringStreamer = new StreamString(pipeClient);
-            await pipeClient.ConnectAsync();
-            isConnected = true;
-            onConnect?.Invoke();
-            StartRecieving();
-        }
-
-        private async void StartRecieving()
-        {
-            using (stringStreamer)
+            if (isConnected)
             {
-                while (isConnected)
-                {
-                    string data = await stringStreamer.ReadString();
-                    onReceiveData?.Invoke(data);
-                }
+                Close();
             }
+            bool isSendPipeConnected = false;
+            bool isReceivePipeConnected = false;
+            StartSendPipe(PipeServerName,
+                () =>
+                {
+                    isSendPipeConnected = true;
+                    if (isReceivePipeConnected)
+                    {
+                        isConnected = true;
+                        Recieving();
+                        onConnect?.Invoke();
+                    }
+                });
+            StartRecievePipe(PipeClientName,
+                () =>
+                {
+                    isReceivePipeConnected = true;
+                    if (isSendPipeConnected)
+                    {
+                        isConnected = true;
+                        Recieving();
+                        onConnect?.Invoke();
+                    }
+                });
+        }
+
+        public void ConnectAsClient(Action onConnect = null)
+        {
+            if (isConnected)
+            {
+                Close();
+            }
+            bool isSendPipeConnected = false;
+            bool isReceivePipeConnected = false;
+            StartSendPipe(PipeClientName,
+                () =>
+                {
+                    isSendPipeConnected = true;
+                    if (isReceivePipeConnected)
+                    {
+                        isConnected = true;
+                        Recieving();
+                        onConnect?.Invoke();
+                    }
+                });
+            StartRecievePipe(PipeServerName,
+                () =>
+                {
+                    isReceivePipeConnected = true;
+                    if (isSendPipeConnected)
+                    {
+                        isConnected = true;
+                        Recieving();
+                        onConnect?.Invoke();
+                    }
+                });
+        }
+
+        private void StartSendPipe(string pipeName, Action onConnected)
+        {
+            _ = Task.Run(async () =>
+            {
+                var pipe = new NamedPipeServerStream(pipeName, PipeDirection.Out, 1);
+                stringStreamerSend = new StreamString(pipe);
+                await pipe.WaitForConnectionAsync();
+                onConnected?.Invoke();
+            });
+        }
+
+        private void StartRecievePipe(string pipName, Action onConnected)
+        {
+            _ = Task.Run(async () =>
+            {
+                var pipe = new NamedPipeClientStream(".", pipName, PipeDirection.In);
+                stringStreamerReceive = new StreamString(pipe);
+                await pipe.ConnectAsync();
+                onConnected?.Invoke();
+            });
+        }
+
+        private async void Recieving()
+        {
+            await Task.Run(async () =>
+            {
+                using (stringStreamerReceive)
+                {
+                    while (isConnected)
+                    {
+                        string data = await stringStreamerReceive.ReadString();
+                        if (string.IsNullOrEmpty(data))
+                        {
+                            continue;
+                        }
+                        onReceiveData?.Invoke(data);
+                    }
+                }
+            });
         }
 
         public void SendData(string data)
         {
-            using (stringStreamer)
+            using (stringStreamerSend)
             {
-                stringStreamer.WriteString(data);
+                stringStreamerSend.WriteString(data);
             }
         }
 
         public void Close()
         {
-            if (pipeServer != null)
+            isConnected = false;
+            if (stringStreamerSend != null)
             {
-                isConnected = false;
-                pipeServer.Close();
+                stringStreamerSend.Close();
+                stringStreamerSend = null;
+            }
+            if (stringStreamerReceive != null)
+            {
+                stringStreamerReceive.Close();
+                stringStreamerReceive = null;
             }
         }
     }

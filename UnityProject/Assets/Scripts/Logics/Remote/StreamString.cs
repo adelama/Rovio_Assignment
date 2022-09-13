@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Rovio.TapMatch.Remote
 {
     // Defines the data protocol for reading and writing strings on our stream
-    internal class StreamString:IDisposable
+    internal class StreamString : IDisposable
     {
         private Stream ioStream;
         private UnicodeEncoding streamEncoding;
@@ -27,13 +27,18 @@ namespace Rovio.TapMatch.Remote
         public async Task<string> ReadString()
         {
             int len = 0;
-
             len = ioStream.ReadByte() * 256;
             len += ioStream.ReadByte();
-            byte[] inBuffer = new byte[len];
-            await ioStream.ReadAsync(inBuffer, 0, len);
-
-            return streamEncoding.GetString(inBuffer);
+            if (len > 0)
+            {
+                byte[] inBuffer = new byte[len];
+                await ioStream.ReadAsync(inBuffer, 0, len);
+                return streamEncoding.GetString(inBuffer);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public int WriteString(string outString)
@@ -50,6 +55,14 @@ namespace Rovio.TapMatch.Remote
             ioStream.Flush();
 
             return outBuffer.Length + 2;
+        }
+
+        public void Close()
+        {
+            if (ioStream != null)
+            {
+                ioStream.Close();
+            }
         }
     }
 }
