@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Windows.Forms;
 using Rovio.TapMatch.Logic;
 using Rovio.TapMatch.Remote;
 
@@ -16,6 +17,7 @@ namespace Rovio.TapMatch.WindowsApp
         public RemoteController(RemoteForm remoteForm)
         {
             this.remoteForm = remoteForm;
+            this.remoteForm.onTileClicked += OnTileClicked;
             logicController = new LogicController(OnGameStart, OnLevelUpdate);
             StartServer();
         }
@@ -31,17 +33,31 @@ namespace Rovio.TapMatch.WindowsApp
             logicController.ExecuteCommand(cmd);
         }
 
+        private void OnTileClicked(PopTileCommand cmd)
+        {
+            if (cmd.CanExecute())
+            {
+                remoteProtocol.SendCommand(cmd);
+            }
+        }
+
 
         private void OnGameStart()
         {
-            remoteForm.InitializeLevel(logicController);
+            remoteForm.Invoke((MethodInvoker)delegate
+            {
+                remoteForm.InitializeLevel(logicController);
+            });
         }
 
         private void OnLevelUpdate(ColorMatchTiles colorMatch)
         {
             if (colorMatch != null)
             {
-                remoteForm.UpdateWindowsLevel(colorMatch);
+                remoteForm.Invoke((MethodInvoker)delegate
+                {
+                    remoteForm.UpdateWindowsLevel(colorMatch);
+                });
             }
         }
     }

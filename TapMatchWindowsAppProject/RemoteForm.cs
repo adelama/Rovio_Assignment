@@ -17,6 +17,8 @@ namespace Rovio.TapMatch.WindowsApp
         private LogicController logicController;
         private bool isUpdatingLevel;
 
+        public Action<PopTileCommand> onTileClicked;
+
         public RemoteForm()
         {
             InitializeComponent();
@@ -54,15 +56,8 @@ namespace Rovio.TapMatch.WindowsApp
                 return;
             }
             var popCmd = new PopTileCommand(tileIndex, logicController);
-            bool isExecuted = logicController.ExecuteCommand(popCmd);
-            if (isExecuted)
-            {
-                
-            }
-            else
-            {
-                //TODO: showing some feedbacks that this action couldn't be executed
-            }
+            logicController.ExecuteCommand(popCmd);
+            onTileClicked?.Invoke(popCmd);
         }
 
         public void UpdateWindowsLevel(ColorMatchTiles matchTiles)
