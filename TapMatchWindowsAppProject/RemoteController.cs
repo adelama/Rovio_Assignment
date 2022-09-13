@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Rovio.TapMatch.Logic;
 using Rovio.TapMatch.Remote;
@@ -10,29 +11,38 @@ namespace Rovio.TapMatch.WindowsApp
     {
         private RemoteForm remoteForm;
         private LogicController logicController;
-        private RemoteProtocol protocol;
+        private RemoteProtocol remoteProtocol;
 
         public RemoteController(RemoteForm remoteForm)
         {
             this.remoteForm = remoteForm;
+            logicController = new LogicController(OnGameStart, OnLevelUpdate);
             StartServer();
-
-            StartGame();
         }
 
         private void StartServer()
         {
-            protocol = new RemoteProtocol((s) => Console.WriteLine(s));
-            _ = protocol.StartServer(() => protocol.SendData("Salam"));
+            remoteProtocol = new RemoteProtocol(logicController, OnRemoteReceiveCommand);
+            remoteProtocol.ConnectAsServer();
         }
 
-        public void StartGame()
+        private void OnRemoteReceiveCommand(Command cmd)
         {
-            logicController = new LogicController();
-            int randomSeed = DateTime.Now.Millisecond;
-            var startCmd = new StartGameCommand(5, 5, 3, randomSeed, logicController);
-            logicController.ExecuteCommand(startCmd);
+            logicController.ExecuteCommand(cmd);
+        }
+
+
+        private void OnGameStart()
+        {
             remoteForm.InitializeLevel(logicController);
+        }
+
+        private void OnLevelUpdate(ColorMatchTiles colorMatch)
+        {
+            if (colorMatch != null)
+            {
+                remoteForm.UpdateWindowsLevel(colorMatch);
+            }
         }
     }
 }

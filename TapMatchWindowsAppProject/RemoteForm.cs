@@ -13,7 +13,7 @@ namespace Rovio.TapMatch.WindowsApp
 {
     internal partial class RemoteForm : Form
     {
-        private TileDummyWindows[] formLevelTiles;
+        private TileDummyWindows[] windowsLevelTiles;
         private LogicController logicController;
         private bool isUpdatingLevel;
 
@@ -31,16 +31,16 @@ namespace Rovio.TapMatch.WindowsApp
 
             levelLayoutPanel.MaximumSize = new Size((tileSize + spacing) * logicController.Level.Width, (tileSize + spacing) * logicController.Level.Height);
 
-            formLevelTiles = new TileDummyWindows[logicController.Level.Tiles.Length];
+            windowsLevelTiles = new TileDummyWindows[logicController.Level.Tiles.Length];
 
-            for (int i = 0; i < formLevelTiles.Length; i++)
+            for (int i = 0; i < windowsLevelTiles.Length; i++)
             {
                 Tile tile = logicController.Level.Tiles[i];
                 Button button = new Button();
                 //button.Location = new Point(0, i/logicController.Level.Width*tileSize);
                 button.Size = new Size(tileSize, tileSize);
                 levelLayoutPanel.Controls.Add(button);
-                formLevelTiles[i] = new TileDummyWindows(tile.Index,
+                windowsLevelTiles[i] = new TileDummyWindows(tile.Index,
                     TileDummyWindows.ConvertLogicColorToFormColor(tile.Color),
                     button,
                     OnTileClick);
@@ -57,7 +57,7 @@ namespace Rovio.TapMatch.WindowsApp
             bool isExecuted = logicController.ExecuteCommand(popCmd);
             if (isExecuted)
             {
-                UpdateUnityLevel(popCmd.ColorMatchTiles);
+                
             }
             else
             {
@@ -65,19 +65,19 @@ namespace Rovio.TapMatch.WindowsApp
             }
         }
 
-        private void UpdateUnityLevel(ColorMatchTiles matchTiles)
+        public void UpdateWindowsLevel(ColorMatchTiles matchTiles)
         {
             isUpdatingLevel = true;
             Tile[] poppedTiles = matchTiles.TilesArray;
             for (int i = 0; i < poppedTiles.Length; i++)
             {
-                formLevelTiles[poppedTiles[i].Index].SetColor(Color.Black);
+                windowsLevelTiles[poppedTiles[i].Index].SetColor(Color.Black);
             }
             this.Refresh();
             System.Threading.Thread.Sleep(500);
-            for (int i = formLevelTiles.Length - 1; i >= 0; i--)
+            for (int i = windowsLevelTiles.Length - 1; i >= 0; i--)
             {
-                formLevelTiles[i].SetColor(
+                windowsLevelTiles[i].SetColor(
                     TileDummyWindows.ConvertLogicColorToFormColor(logicController.Level.Tiles[i].Color));
             }
             this.Refresh();
