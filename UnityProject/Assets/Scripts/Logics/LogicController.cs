@@ -32,7 +32,7 @@ namespace Rovio.TapMatch.Logic
             Level = new LevelGrid(widthOfLevel, heightOfLevel, numberOfColors, Random);
             CheckAndSolveDeadLock();
             IsGameStarted = true;
-            onStartGame();
+            onStartGame?.Invoke();
         }
 
 

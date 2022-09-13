@@ -25,6 +25,8 @@ namespace Rovio.TapMatch.Unity
         private LogicController logicController;
         private int randomSeed;
         private RemoteProtocol remoteProtocol;
+        Queue<Command> receivedCommands = new Queue<Command>();
+        private bool hasRemoteCommands => receivedCommands.Count > 0;
 
         void Start()
         {
@@ -51,7 +53,15 @@ namespace Rovio.TapMatch.Unity
 
         private void OnRemoteReceiveCommand(Command cmd)
         {
-            logicController.ExecuteCommand(cmd);
+            receivedCommands.Enqueue(cmd);
+        }
+
+        private void Update()
+        {
+            while (hasRemoteCommands)
+            {
+                logicController.ExecuteCommand(receivedCommands.Dequeue());
+            }
         }
 
         private void InitUnityLevel()
@@ -110,7 +120,7 @@ namespace Rovio.TapMatch.Unity
 
         private void OnTileClick(int tileIndex)
         {
-            if (isUpdatingLevel)
+            if (isUpdatingLevel || hasRemoteCommands)
             {
                 return;
             }
