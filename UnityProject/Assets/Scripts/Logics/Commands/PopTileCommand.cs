@@ -1,29 +1,42 @@
 ﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Rovio.TapMatch.Logic
 {
     public class PopTileCommand : Command
     {
+        [JsonProperty]
         private int tileIndex;
+        [JsonIgnore]
         public ColorMatchTiles ColorMatchTiles { get; private set; }
         public PopTileCommand(int tileIndex, LogicController controller) : base(controller)
         {
             this.tileIndex = tileIndex;
-            ColorMatchTiles = controller.Level.FindMatchTiles(tileIndex);
         }
+
+        private ColorMatchTiles GetColorMatchTiles()
+        {
+            if (ColorMatchTiles == null)
+            {
+                ColorMatchTiles = logicController.Level.FindMatchTiles(tileIndex);
+            }
+            return ColorMatchTiles;
+        }
+
         public override bool CanExecute()
         {
-            return ColorMatchTiles.TilesCount > 1;
+            return GetColorMatchTiles().TilesCount > 1;
         }
 
         public override void Execute()
         {
-            logicController.PopMatchTiles(ColorMatchTiles);
+            logicController.PopMatchTiles(GetColorMatchTiles());
         }
 
         public override string Serialize()
         {
-            throw new NotImplementedException();
+            return JsonConvert.SerializeObject(this);
         }
     }
 }
