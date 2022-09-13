@@ -62,11 +62,12 @@
     <Compile Include="Assets\Scripts\Logics\LevelGrid.cs" />
     <Compile Include="Assets\Scripts\Logics\ColorMatchTiles.cs" />
     <Compile Include="Assets\Scripts\Logics\Tile.cs" />
-    <Compile Include="Assets\Scripts\Logics\Command.cs" />
-    <Compile Include="Assets\Scripts\Logics\PopTileCommand.cs" />
     <Compile Include="Assets\Scripts\Unity\TileDummy.cs" />
     <Compile Include="Assets\Scripts\Unity\GameController.cs" />
     <Compile Include="Assets\Scripts\Logics\Utils.cs" />
+    <Compile Include="Assets\Scripts\Logics\Commands\PopTileCommand.cs" />
+    <Compile Include="Assets\Scripts\Logics\Commands\Command.cs" />
+    <Compile Include="Assets\Scripts\Logics\Remote\RemoteProtocol.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\Logics\obj\Debug\TapMatchLogic.csproj.FileListAbsolute.txt" />

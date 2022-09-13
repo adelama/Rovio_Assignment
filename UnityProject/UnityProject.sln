@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32602.215
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{5B580621-09B4-68CB-B5F4-5B9DD210A60F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapMatchLogic", "Assets\Scripts\Logics\TapMatchLogic.csproj", "{3D87FA49-122C-4DBE-9F9F-6B3DD3EC1E40}"
@@ -36,8 +34,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {103F5F94-8FFF-4275-B407-E66B6CB8ACB9}
 	EndGlobalSection
 EndGlobal

@@ -34,12 +34,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ColorMatchTiles.cs" />
-    <Compile Include="Command.cs" />
+    <Compile Include="Commands\Command.cs" />
     <Compile Include="LevelGrid.cs" />
     <Compile Include="LogicConstants.cs" />
     <Compile Include="LogicController.cs" />
-    <Compile Include="PopTileCommand.cs" />
+    <Compile Include="Commands\PopTileCommand.cs" />
     <Compile Include="RandomGenerator.cs" />
+    <Compile Include="Remote\RemoteProtocol.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
