@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,13 @@ namespace Rovio.TapMatch.Logic
 {
     public class StartGameCommand : Command
     {
+        [JsonProperty]
         private int widthOfLevel;
+        [JsonProperty]
         private int heightOfLevel;
+        [JsonProperty]
         private int numberOfColors;
+        [JsonProperty]
         private int randomSeed;
         public StartGameCommand(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed, LogicController logicController)
             : base(logicController)
@@ -34,7 +39,7 @@ namespace Rovio.TapMatch.Logic
 
         public override string Serialize()
         {
-            throw new NotImplementedException();
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

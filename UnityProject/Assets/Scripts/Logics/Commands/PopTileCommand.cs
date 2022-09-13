@@ -1,6 +1,5 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Rovio.TapMatch.Logic
 {
@@ -10,6 +9,7 @@ namespace Rovio.TapMatch.Logic
         private int tileIndex;
         [JsonIgnore]
         public ColorMatchTiles ColorMatchTiles { get; private set; }
+
         public PopTileCommand(int tileIndex, LogicController controller) : base(controller)
         {
             this.tileIndex = tileIndex;

@@ -4,6 +4,7 @@ namespace Rovio.TapMatch.Logic
 {
     public abstract class Command
     {
+        [Newtonsoft.Json.JsonIgnore]
         protected LogicController logicController { get; private set; }
 
         protected Command(LogicController controller)
