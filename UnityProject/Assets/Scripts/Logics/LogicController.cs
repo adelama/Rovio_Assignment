@@ -6,7 +6,7 @@ namespace Rovio.TapMatch.Logic
     public class LogicController
     {
         public LevelGrid Level { get; private set; }
-        public RandomGenerator Random { get; private set; }
+        internal RandomGenerator Random { get; private set; }
 
         public bool IsGameStarted { get; private set; }
 
@@ -15,7 +15,7 @@ namespace Rovio.TapMatch.Logic
             
         }
 
-        public void StartGame(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed)
+        internal void StartGame(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed)
         {
             Random = new RandomGenerator(randomSeed);
             widthOfLevel = Utils.Clamp(widthOfLevel, LogicConstants.MinLevelWidth, LogicConstants.MaxLevelWidth);
@@ -51,7 +51,7 @@ namespace Rovio.TapMatch.Logic
             } 
         }
 
-        public void PopMatchTiles(ColorMatchTiles matchTiles)
+        internal void PopMatchTiles(ColorMatchTiles matchTiles)
         {
             Tile[] tiles = matchTiles.TilesArray;
             for (int i = 0; i < tiles.Length; i++)

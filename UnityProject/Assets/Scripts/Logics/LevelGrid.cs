@@ -10,8 +10,9 @@ namespace Rovio.TapMatch.Logic
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int NumberOfColors { get; private set; }
-        private RandomGenerator random;
         public Tile[] Tiles { get; private set; }
+
+        private RandomGenerator random;
 
         public bool IsAtDeadLock
         {
@@ -29,7 +30,7 @@ namespace Rovio.TapMatch.Logic
         }
 
 
-        public LevelGrid(int width, int height, int numberOfColors, RandomGenerator random)
+        internal LevelGrid(int width, int height, int numberOfColors, RandomGenerator random)
         {
             this.Width = width;
             this.Height = height;
@@ -67,7 +68,7 @@ namespace Rovio.TapMatch.Logic
         }
 
 
-        public void Shuffle()
+        internal void Shuffle()
         {
             for (int i = 0; i < Tiles.Length; i++)
             {
@@ -75,7 +76,7 @@ namespace Rovio.TapMatch.Logic
             }
         }
 
-        public void DropDownTiles()
+        internal void DropDownTiles()
         {
             for (int i = Tiles.Length - 1; i >= Tiles.Length - Width; i--)
             {

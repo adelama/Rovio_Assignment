@@ -2,9 +2,9 @@
 
 namespace Rovio.Common
 {
-    public static class Utils
+    internal static class Utils
     {
-        public static T Clamp<T>(T value, T min, T max)
+        internal static T Clamp<T>(T value, T min, T max)
                 where T : IComparable<T>
         {
             T result = value;

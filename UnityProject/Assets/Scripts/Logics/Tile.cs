@@ -19,7 +19,7 @@ namespace Rovio.TapMatch.Logic
         public bool IsRightMatch => IsMatchNeighbor(LogicConstants.TileNeighbor.Right);
 
 
-        public Tile(int index, LogicConstants.TileColor color)
+        internal Tile(int index, LogicConstants.TileColor color)
         {
             this.Index = index;
             this.Color = color;
@@ -30,7 +30,7 @@ namespace Rovio.TapMatch.Logic
             this.Color = color;
         }
 
-        public void SetNeighbors(
+        internal void SetNeighbors(
             Tile top,
             Tile bottom,
             Tile left,
@@ -74,7 +74,7 @@ namespace Rovio.TapMatch.Logic
             return tile.Color == Color;
         }
 
-        public static void SwapColor(Tile t1, Tile t2)
+        internal static void SwapColor(Tile t1, Tile t2)
         {
             LogicConstants.TileColor color1 = t1.Color;
             t1.SetColor(t2.Color);
