@@ -49,7 +49,7 @@ namespace Rovio.TapMatch.WindowsApp
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Purple:
                     return System.Drawing.Color.Magenta;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Brown:
-                    return System.Drawing.Color.Brown;
+                    return System.Drawing.Color.DarkOrange;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.None:
                     return System.Drawing.Color.Black;
                 default:
