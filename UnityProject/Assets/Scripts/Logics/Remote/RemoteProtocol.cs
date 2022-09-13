@@ -19,9 +19,11 @@ namespace Rovio.TapMatch.Remote
         private StreamString stringStreamerReceive;
         private Action<Command> onReceiveData;
         private bool isConnected;
+        private LogicController logicController;
 
-        public RemoteProtocol(Action<Command> onReceiveData)
+        public RemoteProtocol(LogicController logicController, Action<Command> onReceiveData)
         {
+            this.logicController = logicController;
             this.onReceiveData = onReceiveData;
         }
 
@@ -124,7 +126,11 @@ namespace Rovio.TapMatch.Remote
                         {
                             continue;
                         }
-                        Command cmd=null;
+                        Command cmd = Command.Deserialize(data,logicController);
+                        if (cmd == null)
+                        {
+                            continue;
+                        }
                         onReceiveData?.Invoke(cmd);
                     }
                 }

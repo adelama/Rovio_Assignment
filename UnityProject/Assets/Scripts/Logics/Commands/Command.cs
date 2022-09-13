@@ -1,10 +1,11 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Rovio.TapMatch.Logic
 {
     public abstract class Command
     {
-        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         protected LogicController logicController { get; private set; }
 
         protected Command(LogicController controller)
@@ -17,5 +18,12 @@ namespace Rovio.TapMatch.Logic
         public abstract void Execute();
 
         public abstract string Serialize();
+
+        public static Command Deserialize(string objJson,LogicController logicController)
+        {
+            Command cmd = JsonConvert.DeserializeObject<Command>(objJson);
+            cmd.logicController = logicController;
+            return cmd;
+        }
     }
 }
