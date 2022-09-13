@@ -41,9 +41,9 @@ namespace Rovio.TapMatch.WindowsApp
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Red:
                     return System.Drawing.Color.Red;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Green:
-                    return System.Drawing.Color.Green;
+                    return System.Drawing.Color.LimeGreen;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Blue:
-                    return System.Drawing.Color.Blue;
+                    return System.Drawing.Color.Cyan;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Yellow:
                     return System.Drawing.Color.Yellow;
                 case Rovio.TapMatch.Logic.LogicConstants.TileColor.Purple:
