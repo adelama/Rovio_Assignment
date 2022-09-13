@@ -9,9 +9,12 @@ namespace Rovio.TapMatch.Unity
 {
     public class GameController : MonoBehaviour
     {
-        private const int LevelWidth = 5;
-        private const int LevelHeight = 5;
-        private const int LevelNumberOfColors = 6;
+        [Range(LogicConstants.MinLevelWidth,LogicConstants.MaxLevelWidth)]
+        [SerializeField] int levelWidth = 5;
+        [Range(LogicConstants.MinLevelHeight,LogicConstants.MaxLevelHeight)]
+        [SerializeField] int levelHeight = 5;
+        [Range(LogicConstants.MinColorsType,LogicConstants.MaxColorsType)]
+        [SerializeField] int levelNumberOfColors = 3;
 
         [SerializeField] Transform levelPanelTransform;
         private GridLayoutGroup levelGridLayout;
@@ -24,15 +27,15 @@ namespace Rovio.TapMatch.Unity
         void Start()
         {
             randomSeed = DateTime.Now.Millisecond;
-            logicController = new LogicController(LevelWidth, LevelHeight, LevelNumberOfColors, randomSeed);
+            logicController = new LogicController(levelWidth, levelHeight, levelNumberOfColors, randomSeed);
             InitUnityLevel();
         }
 
         private void InitUnityLevel()
         {
             levelGridLayout = levelPanelTransform.GetComponent<GridLayoutGroup>();
-            levelGridLayout.constraintCount = LevelWidth;
-            float scaleFactor = LevelWidth / 5.5f;
+            levelGridLayout.constraintCount = logicController.Level.Width;
+            float scaleFactor = levelGridLayout.constraintCount / 5.5f;
             if (scaleFactor < 1)
             {
                 scaleFactor = 1;
@@ -96,7 +99,7 @@ namespace Rovio.TapMatch.Unity
             }
             else
             {
-
+                //TODO: showing some feedbacks that this action couldn't be executed
             }
         }
     }

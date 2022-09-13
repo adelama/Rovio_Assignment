@@ -41,6 +41,7 @@
     <Compile Include="PopTileCommand.cs" />
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

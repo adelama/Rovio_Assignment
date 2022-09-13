@@ -7,9 +7,9 @@ namespace Rovio.TapMatch.Logic
 {
     public class LevelGrid
     {
-        private int width;
-        private int height;
-        private int numberOfColors;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public int NumberOfColors { get; private set; }
         private RandomGenerator random;
         public Tile[] Tiles { get; private set; }
 
@@ -31,9 +31,9 @@ namespace Rovio.TapMatch.Logic
 
         public LevelGrid(int width, int height, int numberOfColors, RandomGenerator random)
         {
-            this.width = width;
-            this.height = height;
-            this.numberOfColors = numberOfColors;
+            this.Width = width;
+            this.Height = height;
+            this.NumberOfColors = numberOfColors;
             this.random = random;
             Tiles = new Tile[width * height];
             for (int i = 0; i < Tiles.Length; i++)
@@ -63,7 +63,7 @@ namespace Rovio.TapMatch.Logic
 
         private LogicConstants.TileColor GetRandomTileColor()
         {
-            return (LogicConstants.TileColor)random.Next(numberOfColors);
+            return (LogicConstants.TileColor)random.Next(NumberOfColors);
         }
 
 
@@ -77,7 +77,7 @@ namespace Rovio.TapMatch.Logic
 
         public void DropDownTiles()
         {
-            for (int i = Tiles.Length - 1; i >= Tiles.Length - width; i--)
+            for (int i = Tiles.Length - 1; i >= Tiles.Length - Width; i--)
             {
                 DropDownTilesInColumnRecursion(Tiles[i]);
             }
@@ -168,21 +168,21 @@ namespace Rovio.TapMatch.Logic
             switch (neighbor)
             {
                 case LogicConstants.TileNeighbor.Top:
-                    index = targetTileIndex - width;
+                    index = targetTileIndex - Width;
                     if (index < 0)
                     {
                         index = -1;
                     }
                     break;
                 case LogicConstants.TileNeighbor.Bottom:
-                    index = targetTileIndex + width;
+                    index = targetTileIndex + Width;
                     if (index >= Tiles.Length)
                     {
                         index = -1;
                     }
                     break;
                 case LogicConstants.TileNeighbor.Left:
-                    if (targetTileIndex % width == 0)
+                    if (targetTileIndex % Width == 0)
                     {
                         index = -1;
                     }
@@ -193,7 +193,7 @@ namespace Rovio.TapMatch.Logic
                     break;
                 case LogicConstants.TileNeighbor.Right:
                     index = targetTileIndex + 1;
-                    if (index % width == 0)
+                    if (index % Width == 0)
                     {
                         index = -1;
                     }
