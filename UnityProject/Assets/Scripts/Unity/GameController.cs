@@ -49,18 +49,31 @@ namespace Rovio.TapMatch.Unity
             {
                 remoteProtocol.SendCommand(logicController.ExecutedCommands[i]);
             }
+            StartCoroutine(ExecuteRemoteCommandsIE());
         }
 
         private void OnRemoteReceiveCommand(Command cmd)
         {
-            receivedCommands.Enqueue(cmd);
+            lock (receivedCommands)
+            {
+                receivedCommands.Enqueue(cmd);
+            }
         }
 
-        private void Update()
+        private IEnumerator ExecuteRemoteCommandsIE()
         {
-            while (hasRemoteCommands)
+            while (remoteProtocol.IsConnected)
             {
-                logicController.ExecuteCommand(receivedCommands.Dequeue());
+                while (hasRemoteCommands)
+                {
+                    Command cmd;
+                    lock (receivedCommands)
+                    {
+                        cmd = receivedCommands.Dequeue();
+                    }
+                    logicController.ExecuteCommand(cmd);
+                }
+                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -152,7 +165,7 @@ namespace Rovio.TapMatch.Unity
 
         private void OnDestroy()
         {
-            remoteProtocol.Close();
+            remoteProtocol.Disconnect();
         }
     }
 }

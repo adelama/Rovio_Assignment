@@ -18,7 +18,8 @@ namespace Rovio.TapMatch.Remote
         private StreamString stringStreamerSend;
         private StreamString stringStreamerReceive;
         private Action<Command> onReceiveData;
-        private bool isConnected;
+        public bool IsConnected { get; private set; }
+
         private LogicController logicController;
 
         public RemoteProtocol(LogicController logicController, Action<Command> onReceiveData)
@@ -27,9 +28,17 @@ namespace Rovio.TapMatch.Remote
             this.onReceiveData = onReceiveData;
         }
 
-        public void ConnectAsServer(Action onConnect = null)
+        public void Disconnect()
         {
-            if (isConnected)
+            if (IsConnected)
+            {
+                Close();
+            }
+        }
+
+        public async void ConnectAsServer(Action onConnect = null)
+        {
+            if (IsConnected)
             {
                 Close();
             }
@@ -39,29 +48,24 @@ namespace Rovio.TapMatch.Remote
                 () =>
                 {
                     isSendPipeConnected = true;
-                    if (isReceivePipeConnected)
-                    {
-                        isConnected = true;
-                        Recieving();
-                        onConnect?.Invoke();
-                    }
                 });
             StartRecievePipe(PipeClientName,
                 () =>
                 {
                     isReceivePipeConnected = true;
-                    if (isSendPipeConnected)
-                    {
-                        isConnected = true;
-                        Recieving();
-                        onConnect?.Invoke();
-                    }
                 });
+            while (!isReceivePipeConnected || !isSendPipeConnected)
+            {
+                await Task.Delay(100);
+            }
+            IsConnected = true;
+            Recieving();
+            onConnect?.Invoke();
         }
 
-        public void ConnectAsClient(Action onConnect = null)
+        public async void ConnectAsClient(Action onConnect = null)
         {
-            if (isConnected)
+            if (IsConnected)
             {
                 Close();
             }
@@ -71,24 +75,19 @@ namespace Rovio.TapMatch.Remote
                 () =>
                 {
                     isSendPipeConnected = true;
-                    if (isReceivePipeConnected)
-                    {
-                        isConnected = true;
-                        Recieving();
-                        onConnect?.Invoke();
-                    }
                 });
             StartRecievePipe(PipeServerName,
                 () =>
                 {
                     isReceivePipeConnected = true;
-                    if (isSendPipeConnected)
-                    {
-                        isConnected = true;
-                        Recieving();
-                        onConnect?.Invoke();
-                    }
                 });
+            while (!isReceivePipeConnected || !isSendPipeConnected)
+            {
+                await Task.Delay(100);
+            }
+            IsConnected = true;
+            Recieving();
+            onConnect?.Invoke();
         }
 
         private void StartSendPipe(string pipeName, Action onConnected)
@@ -119,14 +118,14 @@ namespace Rovio.TapMatch.Remote
             {
                 using (stringStreamerReceive)
                 {
-                    while (isConnected)
+                    while (IsConnected)
                     {
                         string data = await stringStreamerReceive.ReadString();
                         if (string.IsNullOrEmpty(data))
                         {
                             continue;
                         }
-                        Command cmd = Command.Deserialize(data,logicController);
+                        Command cmd = Command.Deserialize(data, logicController);
                         if (cmd == null)
                         {
                             continue;
@@ -139,7 +138,7 @@ namespace Rovio.TapMatch.Remote
 
         public void SendCommand(Command cmd)
         {
-            if (!isConnected)
+            if (!IsConnected)
                 return;
             using (stringStreamerSend)
             {
@@ -147,9 +146,9 @@ namespace Rovio.TapMatch.Remote
             }
         }
 
-        public void Close()
+        private void Close()
         {
-            isConnected = false;
+            IsConnected = false;
             if (stringStreamerSend != null)
             {
                 stringStreamerSend.Close();
