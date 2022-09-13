@@ -139,6 +139,8 @@ namespace Rovio.TapMatch.Remote
 
         public void SendCommand(Command cmd)
         {
+            if (!isConnected)
+                return;
             using (stringStreamerSend)
             {
                 stringStreamerSend.WriteString(cmd.Serialize());

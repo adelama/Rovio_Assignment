@@ -116,7 +116,11 @@ namespace Rovio.TapMatch.Unity
             }
             var popCmd = new PopTileCommand(tileIndex, logicController);
             bool isExecuted = logicController.ExecuteCommand(popCmd);
-            if (!isExecuted)
+            if (isExecuted)
+            {
+                remoteProtocol.SendCommand(popCmd);
+            }
+            else
             {
                 //TODO: showing some feedbacks that this action couldn't be executed
             }
