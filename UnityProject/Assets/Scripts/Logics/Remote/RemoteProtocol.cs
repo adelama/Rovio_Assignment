@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,47 +11,66 @@ namespace Rovio.TapMatch.Remote
 {
     internal class RemoteProtocol
     {
+        private const string PipeName = "TapMatchPipe";
 
-    }
+        private NamedPipeServerStream pipeServer;
+        private NamedPipeClientStream pipeClient;
+        private StreamString stringStreamer;
+        private Action<string> onReceiveData;
+        private bool isConnected;
 
-    // Defines the data protocol for reading and writing strings on our stream
-    public class StreamString
-    {
-        private Stream ioStream;
-        private UnicodeEncoding streamEncoding;
-
-        public StreamString(Stream ioStream)
+        public RemoteProtocol(Action<string> onReceiveData)
         {
-            this.ioStream = ioStream;
-            streamEncoding = new UnicodeEncoding();
+            this.onReceiveData = onReceiveData;
         }
 
-        public string ReadString()
+        public async Task StartServer(Action onConnect = null)
         {
-            int len = 0;
-
-            len = ioStream.ReadByte() * 256;
-            len += ioStream.ReadByte();
-            byte[] inBuffer = new byte[len];
-            ioStream.Read(inBuffer, 0, len);
-
-            return streamEncoding.GetString(inBuffer);
+            pipeServer = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1);
+            stringStreamer = new StreamString(pipeServer);
+            await pipeServer.WaitForConnectionAsync();
+            isConnected = true;
+            onConnect?.Invoke();
+            StartRecieving();
         }
 
-        public int WriteString(string outString)
+        public async Task StartClient(Action onConnect = null)
         {
-            byte[] outBuffer = streamEncoding.GetBytes(outString);
-            int len = outBuffer.Length;
-            if (len > UInt16.MaxValue)
+            pipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.InOut);
+            stringStreamer = new StreamString(pipeClient);
+            await pipeClient.ConnectAsync();
+            isConnected = true;
+            onConnect?.Invoke();
+            StartRecieving();
+        }
+
+        private async void StartRecieving()
+        {
+            using (stringStreamer)
             {
-                len = (int)UInt16.MaxValue;
+                while (isConnected)
+                {
+                    string data = await stringStreamer.ReadString();
+                    onReceiveData?.Invoke(data);
+                }
             }
-            ioStream.WriteByte((byte)(len / 256));
-            ioStream.WriteByte((byte)(len & 255));
-            ioStream.Write(outBuffer, 0, len);
-            ioStream.Flush();
+        }
 
-            return outBuffer.Length + 2;
+        public void SendData(string data)
+        {
+            using (stringStreamer)
+            {
+                stringStreamer.WriteString(data);
+            }
+        }
+
+        public void Close()
+        {
+            if (pipeServer != null)
+            {
+                isConnected = false;
+                pipeServer.Close();
+            }
         }
     }
 }
