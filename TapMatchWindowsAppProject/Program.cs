@@ -8,6 +8,8 @@ namespace Rovio.TapMatch.WindowsApp
 {
     internal static class Program
     {
+        private static RemoteController remoteController;
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -17,7 +19,9 @@ namespace Rovio.TapMatch.WindowsApp
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RemoteForm());
+            var remoteForm = new RemoteForm();
+            remoteController = new RemoteController(remoteForm);
+            Application.Run(remoteForm);
         }
     }
 }
