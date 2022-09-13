@@ -31,7 +31,9 @@ namespace LogicTests
 
         public LogicTest()
         {
-            logicController = new LogicController(simpleLevelWidth, simpleLevelHeight, simpleLevelNumberOfColors, randomSeed);
+            logicController = new LogicController();
+            var startCmd = new StartGameCommand(simpleLevelWidth, simpleLevelHeight, simpleLevelNumberOfColors, randomSeed, logicController);
+            logicController.ExecuteCommand(startCmd);
             Console.WriteLine("Initial Level State:");
             PrintCurrentLevelTilesColor();
         }
@@ -166,7 +168,9 @@ namespace LogicTests
 
         private LogicController LogicWithDeadLockStateLevel()
         {
-            LogicController controller = new LogicController(3, 3, 2, randomSeed);
+            LogicController controller = new LogicController();
+            var startCmd = new StartGameCommand(5, 5, 3, randomSeed, controller);
+            controller.ExecuteCommand(startCmd);
             for (int i = 0; i < controller.Level.Tiles.Length; i++)
             {
                 controller.Level.Tiles[i].SetColor((LogicConstants.TileColor)(i % 2));

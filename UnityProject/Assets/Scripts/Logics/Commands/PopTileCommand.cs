@@ -18,7 +18,7 @@ namespace Rovio.TapMatch.Logic
 
         public override void Execute()
         {
-            controller.PopMatchTiles(ColorMatchTiles);
+            logicController.PopMatchTiles(ColorMatchTiles);
         }
     }
 }

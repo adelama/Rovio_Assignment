@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Logics\Commands\PopTileCommand.cs" />
     <Compile Include="Assets\Scripts\Logics\Commands\Command.cs" />
     <Compile Include="Assets\Scripts\Logics\Remote\RemoteProtocol.cs" />
+    <Compile Include="Assets\Scripts\Logics\Commands\StartGameCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\Logics\obj\Debug\TapMatchLogic.csproj.FileListAbsolute.txt" />

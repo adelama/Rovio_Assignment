@@ -5,11 +5,11 @@ namespace Rovio.TapMatch.Logic
 {
     public abstract class Command
     {
-        protected LogicController controller { get; private set; }
+        protected LogicController logicController { get; private set; }
 
         protected Command(LogicController controller)
         {
-            this.controller = controller;
+            this.logicController = controller;
         }
 
         public abstract bool CanExecute();

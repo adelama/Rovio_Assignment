@@ -26,8 +26,10 @@ namespace Rovio.TapMatch.Unity
 
         void Start()
         {
+            logicController = new LogicController();
             randomSeed = DateTime.Now.Millisecond;
-            logicController = new LogicController(levelWidth, levelHeight, levelNumberOfColors, randomSeed);
+            var startCmd = new StartGameCommand(levelWidth, levelHeight, levelNumberOfColors, randomSeed,logicController);
+            logicController.ExecuteCommand(startCmd);
             InitUnityLevel();
         }
 

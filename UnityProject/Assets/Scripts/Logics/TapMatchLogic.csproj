@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="ColorMatchTiles.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\StartGameCommand.cs" />
     <Compile Include="LevelGrid.cs" />
     <Compile Include="LogicConstants.cs" />
     <Compile Include="LogicController.cs" />

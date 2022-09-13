@@ -8,14 +8,22 @@ namespace Rovio.TapMatch.Logic
         public LevelGrid Level { get; private set; }
         public RandomGenerator Random { get; private set; }
 
-        public LogicController(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed)
+        public bool IsGameStarted { get; private set; }
+
+        public LogicController()
+        {
+            
+        }
+
+        public void StartGame(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed)
         {
             Random = new RandomGenerator(randomSeed);
-            widthOfLevel = Utils.Clamp(widthOfLevel,LogicConstants.MinLevelWidth,LogicConstants.MaxLevelWidth);
-            heightOfLevel = Utils.Clamp(heightOfLevel, LogicConstants.MinLevelHeight,LogicConstants.MaxLevelHeight);
-            numberOfColors = Utils.Clamp(numberOfColors, LogicConstants.MinColorsType,LogicConstants.MaxColorsType);
+            widthOfLevel = Utils.Clamp(widthOfLevel, LogicConstants.MinLevelWidth, LogicConstants.MaxLevelWidth);
+            heightOfLevel = Utils.Clamp(heightOfLevel, LogicConstants.MinLevelHeight, LogicConstants.MaxLevelHeight);
+            numberOfColors = Utils.Clamp(numberOfColors, LogicConstants.MinColorsType, LogicConstants.MaxColorsType);
             Level = new LevelGrid(widthOfLevel, heightOfLevel, numberOfColors, Random);
             CheckAndSolveDeadLock();
+            IsGameStarted = true;
         }
 
 
