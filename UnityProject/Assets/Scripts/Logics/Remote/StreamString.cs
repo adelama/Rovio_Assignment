@@ -21,7 +21,6 @@ namespace Rovio.TapMatch.Remote
 
         public void Dispose()
         {
-            ioStream.Dispose();
         }
 
         public async Task<string> ReadString()
@@ -61,7 +60,7 @@ namespace Rovio.TapMatch.Remote
         {
             if (ioStream != null)
             {
-                Dispose();
+                ioStream.Dispose();
                 ioStream.Close();
             }
         }
