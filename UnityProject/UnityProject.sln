@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{5B580621-09B4-68CB-B5F4-5B9DD210A60F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapMatchLogic", "Assets\Scripts\Logics\TapMatchLogic.csproj", "{3D87FA49-122C-4DBE-9F9F-6B3DD3EC1E40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTests", "..\LogicTests\LogicTests.csproj", "{93E81FAB-5A71-4457-B1A5-9EE181ADEAB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicTests", "..\LogicTests\LogicTests.csproj", "{93E81FAB-5A71-4457-B1A5-9EE181ADEAB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapMatchWindowsAppProject", "..\TapMatchWindowsAppProject\TapMatchWindowsAppProject.csproj", "{A581DF1E-41B2-4206-945E-FC96DFDABC6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,8 +29,15 @@ Global
 		{93E81FAB-5A71-4457-B1A5-9EE181ADEAB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93E81FAB-5A71-4457-B1A5-9EE181ADEAB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93E81FAB-5A71-4457-B1A5-9EE181ADEAB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A581DF1E-41B2-4206-945E-FC96DFDABC6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A581DF1E-41B2-4206-945E-FC96DFDABC6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A581DF1E-41B2-4206-945E-FC96DFDABC6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A581DF1E-41B2-4206-945E-FC96DFDABC6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {103F5F94-8FFF-4275-B407-E66B6CB8ACB9}
 	EndGlobalSection
 EndGlobal
