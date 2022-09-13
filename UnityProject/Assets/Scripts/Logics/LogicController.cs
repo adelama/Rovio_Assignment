@@ -13,9 +13,14 @@ namespace Rovio.TapMatch.Logic
 
         public List<Command> ExecutedCommands { get; private set; }
 
-        public LogicController()
+        private Action<ColorMatchTiles> onLevelUpdate;
+        private Action onGameStart;
+
+        public LogicController(Action onGameStart=null, Action<ColorMatchTiles> onLevelUpdate = null)
         {
             ExecutedCommands = new List<Command>();
+            this.onLevelUpdate = onLevelUpdate;
+            this.onGameStart = onGameStart;
         }
 
         internal void StartGame(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed)
@@ -27,6 +32,7 @@ namespace Rovio.TapMatch.Logic
             Level = new LevelGrid(widthOfLevel, heightOfLevel, numberOfColors, Random);
             CheckAndSolveDeadLock();
             IsGameStarted = true;
+            onGameStart();
         }
 
 
@@ -51,8 +57,8 @@ namespace Rovio.TapMatch.Logic
         {
             while (Level.IsAtDeadLock)
             {
-                Level.Shuffle();        
-            } 
+                Level.Shuffle();
+            }
         }
 
         internal void PopMatchTiles(ColorMatchTiles matchTiles)
@@ -64,6 +70,7 @@ namespace Rovio.TapMatch.Logic
             }
             Level.DropDownTiles();
             CheckAndSolveDeadLock();
+            onLevelUpdate?.Invoke(matchTiles);
         }
 
 
@@ -72,7 +79,7 @@ namespace Rovio.TapMatch.Logic
         //this is require to run tests
         private static void Main()
         {
-            
+
         }
     }
 }

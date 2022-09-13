@@ -61,6 +61,7 @@ namespace Rovio.TapMatch.Remote
         {
             if (ioStream != null)
             {
+                Dispose();
                 ioStream.Close();
             }
         }

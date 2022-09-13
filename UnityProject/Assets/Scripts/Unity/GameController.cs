@@ -4,16 +4,17 @@ using UnityEngine;
 using Rovio.TapMatch.Logic;
 using System;
 using UnityEngine.UI;
+using Rovio.TapMatch.Remote;
 
 namespace Rovio.TapMatch.Unity
 {
     public class GameController : MonoBehaviour
     {
-        [Range(LogicConstants.MinLevelWidth,LogicConstants.MaxLevelWidth)]
+        [Range(LogicConstants.MinLevelWidth, LogicConstants.MaxLevelWidth)]
         [SerializeField] int levelWidth = 5;
-        [Range(LogicConstants.MinLevelHeight,LogicConstants.MaxLevelHeight)]
+        [Range(LogicConstants.MinLevelHeight, LogicConstants.MaxLevelHeight)]
         [SerializeField] int levelHeight = 5;
-        [Range(LogicConstants.MinColorsType,LogicConstants.MaxColorsType)]
+        [Range(LogicConstants.MinColorsType, LogicConstants.MaxColorsType)]
         [SerializeField] int levelNumberOfColors = 3;
 
         [SerializeField] Transform levelPanelTransform;
@@ -23,14 +24,34 @@ namespace Rovio.TapMatch.Unity
 
         private LogicController logicController;
         private int randomSeed;
+        private RemoteProtocol remoteProtocol;
 
         void Start()
         {
-            logicController = new LogicController();
+            logicController = new LogicController(OnGameStart, OnLevelUpdate);
             randomSeed = DateTime.Now.Millisecond;
-            var startCmd = new StartGameCommand(levelWidth, levelHeight, levelNumberOfColors, randomSeed,logicController);
+            var startCmd = new StartGameCommand(levelWidth, levelHeight, levelNumberOfColors, randomSeed, logicController);
             logicController.ExecuteCommand(startCmd);
-            InitUnityLevel();
+            ConnectToRemote();
+        }
+
+        private void ConnectToRemote()
+        {
+            remoteProtocol = new RemoteProtocol(logicController, OnRemoteReceiveCommand);
+            remoteProtocol.ConnectAsClient(OnRemoteConnected);
+        }
+
+        private void OnRemoteConnected()
+        {
+            for (int i = 0; i < logicController.ExecutedCommands.Count; i++)
+            {
+                remoteProtocol.SendCommand(logicController.ExecutedCommands[i]);
+            }
+        }
+
+        private void OnRemoteReceiveCommand(Command cmd)
+        {
+            logicController.ExecuteCommand(cmd);
         }
 
         private void InitUnityLevel()
@@ -95,14 +116,29 @@ namespace Rovio.TapMatch.Unity
             }
             var popCmd = new PopTileCommand(tileIndex, logicController);
             bool isExecuted = logicController.ExecuteCommand(popCmd);
-            if (isExecuted)
-            {
-                UpdateUnityLevel(popCmd.ColorMatchTiles);
-            }
-            else
+            if (!isExecuted)
             {
                 //TODO: showing some feedbacks that this action couldn't be executed
             }
+        }
+
+        private void OnGameStart()
+        {
+            InitUnityLevel();
+        }
+
+        private void OnLevelUpdate(ColorMatchTiles colorMatch)
+        {
+            if (colorMatch != null)
+            {
+                UpdateUnityLevel(colorMatch);
+            }
+        }
+
+
+        private void OnDestroy()
+        {
+            remoteProtocol.Close();
         }
     }
 }
