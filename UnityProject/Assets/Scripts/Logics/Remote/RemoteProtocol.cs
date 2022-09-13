@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rovio.TapMatch.Logic;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
@@ -16,10 +17,10 @@ namespace Rovio.TapMatch.Remote
 
         private StreamString stringStreamerSend;
         private StreamString stringStreamerReceive;
-        private Action<string> onReceiveData;
+        private Action<Command> onReceiveData;
         private bool isConnected;
 
-        public RemoteProtocol(Action<string> onReceiveData)
+        public RemoteProtocol(Action<Command> onReceiveData)
         {
             this.onReceiveData = onReceiveData;
         }
@@ -123,17 +124,18 @@ namespace Rovio.TapMatch.Remote
                         {
                             continue;
                         }
-                        onReceiveData?.Invoke(data);
+                        Command cmd=null;
+                        onReceiveData?.Invoke(cmd);
                     }
                 }
             });
         }
 
-        public void SendData(string data)
+        public void SendCommand(Command cmd)
         {
             using (stringStreamerSend)
             {
-                stringStreamerSend.WriteString(data);
+                stringStreamerSend.WriteString(cmd.Serialize());
             }
         }
 

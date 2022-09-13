@@ -31,5 +31,10 @@ namespace Rovio.TapMatch.Logic
         {
             logicController.StartGame(widthOfLevel,heightOfLevel,numberOfColors,randomSeed);
         }
+
+        public override string Serialize()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

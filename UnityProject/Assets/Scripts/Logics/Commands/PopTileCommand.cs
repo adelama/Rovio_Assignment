@@ -20,5 +20,10 @@ namespace Rovio.TapMatch.Logic
         {
             logicController.PopMatchTiles(ColorMatchTiles);
         }
+
+        public override string Serialize()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace Rovio.TapMatch.Logic
 
         public abstract void Execute();
 
+        public abstract string Serialize();
     }
 }
