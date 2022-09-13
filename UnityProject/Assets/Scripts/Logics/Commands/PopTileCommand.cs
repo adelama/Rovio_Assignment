@@ -10,7 +10,7 @@ namespace Rovio.TapMatch.Logic
         [JsonIgnore]
         public ColorMatchTiles ColorMatchTiles { get; private set; }
 
-        public PopTileCommand(int tileIndex, LogicController controller) : base(controller)
+        public PopTileCommand(int tileIndex, LogicController controller) : base(controller, CommandType.PopTile)
         {
             this.tileIndex = tileIndex;
         }

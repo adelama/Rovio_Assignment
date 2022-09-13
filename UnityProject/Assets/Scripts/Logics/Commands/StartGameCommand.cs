@@ -17,8 +17,9 @@ namespace Rovio.TapMatch.Logic
         private int numberOfColors;
         [JsonProperty]
         private int randomSeed;
+
         public StartGameCommand(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed, LogicController logicController)
-            : base(logicController)
+            : base(logicController,CommandType.StartGame)
 
         {
             this.widthOfLevel = widthOfLevel;
