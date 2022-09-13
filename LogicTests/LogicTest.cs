@@ -7,7 +7,7 @@ namespace LogicTests
     public class LogicTest
     {
         private const int randomSeed = 123456;
-        private const int simpleLevelWidth = 4;
+        private const int simpleLevelWidth = 5;
         private const int simpleLevelHeight = 5;
         private const int simpleLevelNumberOfColors = 3;
 
@@ -16,17 +16,17 @@ namespace LogicTests
         //The RandomGenerator is Deterministic so
         //for randomSeed = 123456 the Initial Level State Should be like this
         /*
-              ----------------------------------------------
-             |  0: Green | 1: Red    | 2: Red   |  3: Red   |
-              ----------------------------------------------
-             |  4: Red   | 5: Red    | 6: Blue  |  7: Red   |
-              ----------------------------------------------
-             |  8: Blue  | 9: Green  | 10: Red  |  11: Blue |
-              ----------------------------------------------
-             |  12: Red  | 13: Red   | 14: Red  | 15: Red   | 
-              ----------------------------------------------
-             |  16: Blue | 17: Green | 18: Red  | 19: Blue  | 
-              ----------------------------------------------
+              --------------------------------------------------------
+             |  0: Green | 1: Red   | 2: Red    | 3: Red   | 4: Red   |
+              --------------------------------------------------------
+             |  5: Red   | 6: Blue  | 7: Red    | 8: Blue  | 9: Green |
+              --------------------------------------------------------
+             |  10: Red  | 11: Blue | 12: Red   | 13: Red  | 14: Red  |
+              --------------------------------------------------------
+             |  15: Red  | 16: Blue | 17: Green | 18: Red  | 19: Blue |
+              --------------------------------------------------------
+             |  20: Red  | 21: Red  | 22: Green | 23: Blue | 24: Blue |
+              --------------------------------------------------------
          */
 
         public LogicTest()
@@ -38,17 +38,17 @@ namespace LogicTests
 
         private void PrintCurrentLevelTilesColor()
         {
-            Console.WriteLine("_______________________________________________________");
+            Console.WriteLine("__________________________________________________________");
             for (int i = 0; i < logicController.Level.Tiles.Length; i++)
             {
-                if (i % simpleLevelWidth == 0)
+                if (i % simpleLevelWidth == 0 && i != 0)
                 {
                     Console.WriteLine();
                 }
-                Console.Write($"{i}: {logicController.Level.Tiles[i].Color} | ");
+                Console.Write($"{i}: {logicController.Level.Tiles[i].Color}".PadRight(10)+"| ");
             }
             Console.WriteLine();
-            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine("----------------------------------------------------------");
         }
 
         [TestMethod]
@@ -61,11 +61,11 @@ namespace LogicTests
         [TestMethod]
         public void CheckingTileNeighbors()
         {
-            Tile tile = logicController.Level.Tiles[5];
-            Assert.AreEqual(logicController.Level.Tiles[1], tile.Top);
-            Assert.AreEqual(logicController.Level.Tiles[9], tile.Bottom);
-            Assert.AreEqual(logicController.Level.Tiles[4], tile.Left);
-            Assert.AreEqual(logicController.Level.Tiles[6], tile.Right);
+            Tile tile = logicController.Level.Tiles[7];
+            Assert.AreEqual(logicController.Level.Tiles[2], tile.Top);
+            Assert.AreEqual(logicController.Level.Tiles[12], tile.Bottom);
+            Assert.AreEqual(logicController.Level.Tiles[6], tile.Left);
+            Assert.AreEqual(logicController.Level.Tiles[8], tile.Right);
         }
 
         [TestMethod]
@@ -107,11 +107,11 @@ namespace LogicTests
         [TestMethod]
         public void IsNeighborsMatchForTile()
         {
-            int tileIndex = 5;
-            Assert.IsTrue(logicController.Level.Tiles[tileIndex].IsTopMatch);
+            int tileIndex = 13;
+            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsTopMatch);
             Assert.IsTrue(logicController.Level.Tiles[tileIndex].IsLeftMatch);
-            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsBottomMatch);
-            Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsRightMatch);
+            Assert.IsTrue(logicController.Level.Tiles[tileIndex].IsBottomMatch);
+            Assert.IsTrue(logicController.Level.Tiles[tileIndex].IsRightMatch);
 
             tileIndex = 0;
             Assert.IsFalse(logicController.Level.Tiles[tileIndex].IsTopMatch);
@@ -133,19 +133,24 @@ namespace LogicTests
         [TestMethod]
         public void FindingTilesMatchColorOfGivenTile()
         {
-            //expected tiles index: 1, 2, 3, 4, 5, 7,
+            //expected tiles index: 1, 2, 3, 4, 7, 12, 13, 14, 18
             ColorMatchTiles expectedMatches = new ColorMatchTiles();
             expectedMatches.AddTile(logicController.Level.Tiles[1]);
             expectedMatches.AddTile(logicController.Level.Tiles[2]);
             expectedMatches.AddTile(logicController.Level.Tiles[3]);
             expectedMatches.AddTile(logicController.Level.Tiles[4]);
-            expectedMatches.AddTile(logicController.Level.Tiles[5]);
             expectedMatches.AddTile(logicController.Level.Tiles[7]);
+            expectedMatches.AddTile(logicController.Level.Tiles[12]);
+            expectedMatches.AddTile(logicController.Level.Tiles[13]);
+            expectedMatches.AddTile(logicController.Level.Tiles[14]);
+            expectedMatches.AddTile(logicController.Level.Tiles[18]);
             for (int tileIndex = 1; tileIndex < 7; tileIndex++)
             {
                 int tileIndexToStartFinding = tileIndex;
-                if (tileIndex == 6)
+                if (tileIndex == 5)
                     tileIndexToStartFinding = 7;
+                else if (tileIndex == 6)
+                    tileIndexToStartFinding = 18;
                 ColorMatchTiles foundMatches = logicController.Level.FindMatchTiles(tileIndexToStartFinding);
                 var foundedTilesArray = foundMatches.TilesSortedArray;
                 var expectedTilesArray = expectedMatches.TilesSortedArray;
@@ -197,20 +202,21 @@ namespace LogicTests
         public void CheckingPopTileCommand()
         {
             int tileIndex = 13;
-            LogicConstants.TileColor[] expectedTilesState = new LogicConstants.TileColor[]
+            string[] expectedTilesState = new string[]
                 {
-                    LogicConstants.TileColor.Red,   LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Red,   LogicConstants.TileColor.Red ,
-                    LogicConstants.TileColor.Green, LogicConstants.TileColor.Red,   LogicConstants.TileColor.Green, LogicConstants.TileColor.Red ,
-                    LogicConstants.TileColor.Red,   LogicConstants.TileColor.Red,   LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Red ,
-                    LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Green, LogicConstants.TileColor.Red,   LogicConstants.TileColor.Blue ,
-                    LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Green, LogicConstants.TileColor.Blue,  LogicConstants.TileColor.Blue ,
+                    "Green", "Green", "Red"   , "Red"  , "Red"   ,
+                    "Red"  , "Blue" , "Blue"  , "Red"  , "Green" ,
+                    "Red"  , "Blue" , "Green" , "Red"  , "Green" ,
+                    "Red"  , "Blue" , "Green" , "Blue" , "Blue"  ,
+                    "Red"  , "Red"  , "Green" , "Blue" , "Blue"  ,
                 };
             logicController.ExecuteCommand(new PopTileCommand(tileIndex, logicController));
             for (int i = 0; i < expectedTilesState.Length; i++)
             {
-                Assert.IsTrue(expectedTilesState[i] == logicController.Level.Tiles[i].Color);
+                Assert.IsTrue(expectedTilesState[i] == logicController.Level.Tiles[i].Color.ToString());
             }
-            Console.WriteLine("Level State after Pop Tile: " + tileIndex);
+            Console.WriteLine();
+            Console.WriteLine("Level State after Popping Tile: " + tileIndex);
             PrintCurrentLevelTilesColor();
         }
 
