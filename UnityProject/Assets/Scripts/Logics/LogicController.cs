@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Rovio.Common;
 
 namespace Rovio.TapMatch.Logic
@@ -10,9 +11,11 @@ namespace Rovio.TapMatch.Logic
 
         public bool IsGameStarted { get; private set; }
 
+        public List<Command> ExecutedCommands { get; private set; }
+
         public LogicController()
         {
-            
+            ExecutedCommands = new List<Command>();
         }
 
         internal void StartGame(int widthOfLevel, int heightOfLevel, int numberOfColors, int randomSeed)
@@ -38,6 +41,7 @@ namespace Rovio.TapMatch.Logic
             if (cmd.CanExecute())
             {
                 cmd.Execute();
+                ExecutedCommands.Add(cmd);
                 return true;
             }
             return false;
