@@ -34,7 +34,6 @@ namespace Rovio.TapMatch.Remote
         public RemoteProtocol(ConnectionType connectionType, LogicController logicController, Action<Command> onReceiveData)
         {
             this.connectionType = connectionType;
-            this.connectionType = ConnectionType.Pipe;
             this.logicController = logicController;
             this.onReceiveData = onReceiveData;
         }
