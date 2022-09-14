@@ -14,30 +14,30 @@ namespace Rovio.TapMatch.WindowsApp
     internal partial class RemoteForm : Form
     {
         private TileDummyWindows[] windowsLevelTiles;
-        private LogicController logicController;
+        private LevelGrid logicLevel;
         private bool isUpdatingLevel;
 
-        public Action<PopTileCommand> onTileClicked;
+        public Action<int> onTileClicked;
 
         public RemoteForm()
         {
             InitializeComponent();
         }
 
-        public void InitializeLevel(LogicController logicController)
+        public void InitializeLevel(LevelGrid logicLevel)
         {
-            this.logicController = logicController;
+            this.logicLevel = logicLevel;
 
             int tileSize = 80;
             int spacing = 10;
 
-            levelLayoutPanel.MaximumSize = new Size((tileSize + spacing) * logicController.Level.Width, (tileSize + spacing) * logicController.Level.Height);
+            levelLayoutPanel.MaximumSize = new Size((tileSize + spacing) * logicLevel.Width, (tileSize + spacing) * logicLevel.Height);
 
-            windowsLevelTiles = new TileDummyWindows[logicController.Level.Tiles.Length];
+            windowsLevelTiles = new TileDummyWindows[logicLevel.Tiles.Length];
 
             for (int i = 0; i < windowsLevelTiles.Length; i++)
             {
-                Tile tile = logicController.Level.Tiles[i];
+                Tile tile = logicLevel.Tiles[i];
                 Button button = new Button();
                 //button.Location = new Point(0, i/logicController.Level.Width*tileSize);
                 button.Size = new Size(tileSize, tileSize);
@@ -55,9 +55,7 @@ namespace Rovio.TapMatch.WindowsApp
             {
                 return;
             }
-            var popCmd = new PopTileCommand(tileIndex, logicController);
-            logicController.ExecuteCommand(popCmd);
-            onTileClicked?.Invoke(popCmd);
+            onTileClicked?.Invoke(tileIndex);
         }
 
         public void UpdateWindowsLevel(ColorMatchTiles matchTiles)
@@ -73,7 +71,7 @@ namespace Rovio.TapMatch.WindowsApp
             for (int i = windowsLevelTiles.Length - 1; i >= 0; i--)
             {
                 windowsLevelTiles[i].SetColor(
-                    TileDummyWindows.ConvertLogicColorToFormColor(logicController.Level.Tiles[i].Color));
+                    TileDummyWindows.ConvertLogicColorToFormColor(logicLevel.Tiles[i].Color));
             }
             this.Refresh();
             System.Threading.Thread.Sleep(200);

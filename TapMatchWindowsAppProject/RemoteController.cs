@@ -33,11 +33,13 @@ namespace Rovio.TapMatch.WindowsApp
             logicController.ExecuteCommand(cmd);
         }
 
-        private void OnTileClicked(PopTileCommand cmd)
+        private void OnTileClicked(int tileIndex)
         {
-            if (cmd.CanExecute())
+            var popCmd = new PopTileCommand(tileIndex, logicController);
+            bool isExecuted = logicController.ExecuteCommand(popCmd);
+            if (isExecuted)
             {
-                remoteProtocol.SendCommand(cmd);
+                remoteProtocol.SendCommand(popCmd);
             }
         }
 
@@ -46,7 +48,7 @@ namespace Rovio.TapMatch.WindowsApp
         {
             remoteForm.Invoke((MethodInvoker)delegate
             {
-                remoteForm.InitializeLevel(logicController);
+                remoteForm.InitializeLevel(logicController.Level);
             });
         }
 
