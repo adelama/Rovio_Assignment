@@ -28,6 +28,9 @@ namespace Rovio.TapMatch.WindowsApp
         {
             this.logicLevel = logicLevel;
 
+            waitingLabel.Visible = false;
+            levelLayoutPanel.Visible = true;
+
             int tileSize = 80;
             int spacing = 10;
 

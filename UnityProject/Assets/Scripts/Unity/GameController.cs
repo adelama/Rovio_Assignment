@@ -28,8 +28,6 @@ namespace Rovio.TapMatch.Unity
             levelController.onTileClicked += OnTileClicked;
 
             logicController = new LogicController(OnGameStart, OnLevelUpdate);
-
-            ConnectToRemote();
         }
 
         public void BtnStartClicked()
@@ -50,6 +48,7 @@ namespace Rovio.TapMatch.Unity
             randomSeed = DateTime.Now.Millisecond;
             var startCmd = new StartGameCommand(levelWidth, levelHeight, levelNumberOfColors, randomSeed, logicController);
             logicController.ExecuteCommand(startCmd);
+            ConnectToRemote();
         }
 
         private void ConnectToRemote()
@@ -126,7 +125,10 @@ namespace Rovio.TapMatch.Unity
 
         private void OnDestroy()
         {
-            remoteProtocol.Disconnect(true);
+            if (remoteProtocol != null)
+            {
+                remoteProtocol.Disconnect(true);
+            }
         }
     }
 }
