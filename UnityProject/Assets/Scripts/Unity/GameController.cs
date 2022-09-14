@@ -39,7 +39,7 @@ namespace Rovio.TapMatch.Unity
 
         private void ConnectToRemote()
         {
-            remoteProtocol = new RemoteProtocol(logicController, OnRemoteReceiveCommand);
+            remoteProtocol = new RemoteProtocol(RemoteProtocol.ConnectionType.Socket,logicController, OnRemoteReceiveCommand);
             remoteProtocol.ConnectAsClient(OnRemoteConnected);
         }
 

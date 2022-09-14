@@ -24,7 +24,7 @@ namespace Rovio.TapMatch.WindowsApp
 
         private void StartServer()
         {
-            remoteProtocol = new RemoteProtocol(logicController, OnRemoteReceiveCommand);
+            remoteProtocol = new RemoteProtocol(RemoteProtocol.ConnectionType.Socket,logicController, OnRemoteReceiveCommand);
             remoteProtocol.ConnectAsServer();
         }
 
