@@ -147,7 +147,7 @@ namespace Rovio.TapMatch.Remote
                 catch (Exception e)
                 {
 #if UNITY_EDITOR
-                    UnityEngine.Debug.LogError(e.Message);
+                    UnityEngine.Debug.LogWarning(e.Message);
 #else
                     System.Diagnostics.Debug.WriteLine(e.Message);
 #endif                
@@ -179,7 +179,7 @@ namespace Rovio.TapMatch.Remote
                 catch (Exception e)
                 {
 #if UNITY_EDITOR
-                    UnityEngine.Debug.LogError(e.Message);
+                    UnityEngine.Debug.LogWarning(e.Message);
 #else
                     System.Diagnostics.Debug.WriteLine(e.Message);
 #endif
@@ -203,7 +203,7 @@ namespace Rovio.TapMatch.Remote
                 catch (Exception e)
                 {
 #if UNITY_EDITOR
-                UnityEngine.Debug.LogError(e.Message);
+                UnityEngine.Debug.LogWarning(e.Message);
 #else
                     System.Diagnostics.Debug.WriteLine(e.Message);
 #endif
@@ -227,7 +227,7 @@ namespace Rovio.TapMatch.Remote
                 catch (Exception e)
                 {
 #if UNITY_EDITOR
-                    UnityEngine.Debug.LogError(e.Message);
+                    UnityEngine.Debug.LogWarning(e.Message);
 #else
                     System.Diagnostics.Debug.WriteLine(e.Message);
 #endif

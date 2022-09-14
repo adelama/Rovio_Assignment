@@ -10,13 +10,6 @@ namespace Rovio.TapMatch.Unity
 {
     public class GameController : MonoBehaviour
     {
-        [Range(LogicConstants.MinLevelWidth, LogicConstants.MaxLevelWidth)]
-        [SerializeField] int levelWidth = 5;
-        [Range(LogicConstants.MinLevelHeight, LogicConstants.MaxLevelHeight)]
-        [SerializeField] int levelHeight = 5;
-        [Range(LogicConstants.MinColorsType, LogicConstants.MaxColorsType)]
-        [SerializeField] int levelNumberOfColors = 3;
-
         [SerializeField] LevelController levelController;
 
         private LogicController logicController;
@@ -35,10 +28,28 @@ namespace Rovio.TapMatch.Unity
             levelController.onTileClicked += OnTileClicked;
 
             logicController = new LogicController(OnGameStart, OnLevelUpdate);
+
+            ConnectToRemote();
+        }
+
+        public void BtnStartClicked()
+        {
+            StartGame(
+                levelController.LevelSettingsPanel.LevelWidth,
+                levelController.LevelSettingsPanel.LevelHeight,
+                levelController.LevelSettingsPanel.NumberOfColors
+                );
+        }
+
+        private void StartGame(int levelWidth, int levelHeight, int levelNumberOfColors)
+        {
+            if (logicController.IsGameStarted)
+            {
+                return;
+            }
             randomSeed = DateTime.Now.Millisecond;
             var startCmd = new StartGameCommand(levelWidth, levelHeight, levelNumberOfColors, randomSeed, logicController);
             logicController.ExecuteCommand(startCmd);
-            ConnectToRemote();
         }
 
         private void ConnectToRemote()

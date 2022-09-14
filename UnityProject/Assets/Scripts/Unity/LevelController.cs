@@ -9,19 +9,30 @@ namespace Rovio.TapMatch.Unity
 {
     public class LevelController : MonoBehaviour
     {
+        [SerializeField] LevelSettingsPanel levelSettingsPanel;
         [SerializeField] Transform levelPanelTransform;
         private TileDummy[] unityLevelTiles;
         private bool isUpdatingLevel;
         private LevelGrid logicLevel;
+
+        public LevelSettingsPanel LevelSettingsPanel => levelSettingsPanel;
 
         public Action<int> onTileClicked;
 
         public void InitUnityLevel(LevelGrid logicLevel)
         {
             this.logicLevel = logicLevel;
+
+            levelSettingsPanel.HidePanel();
+            levelPanelTransform.gameObject.SetActive(true);
+
             var levelGridLayout = levelPanelTransform.GetComponent<GridLayoutGroup>();
             levelGridLayout.constraintCount = logicLevel.Width;
             float scaleFactor = levelGridLayout.constraintCount / 5.5f;
+            if (logicLevel.Height > 12 && logicLevel.Width < 12)
+            {
+                scaleFactor = logicLevel.Height / 12f;
+            }
             if (scaleFactor < 1)
             {
                 scaleFactor = 1;
