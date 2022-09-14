@@ -165,7 +165,7 @@ namespace Rovio.TapMatch.Unity
 
         private void OnDestroy()
         {
-            remoteProtocol.Disconnect();
+            remoteProtocol.Disconnect(true);
         }
     }
 }
